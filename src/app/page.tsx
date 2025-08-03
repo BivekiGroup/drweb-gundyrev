@@ -2216,6 +2216,166 @@ export default function DrWebLanding() {
             </div>
           </div>
         </div>
+              </section>
+
+      {/* Partner Block */}
+      <section className="py-16 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-circuit-pattern opacity-5"></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-12">
+            <Badge
+              variant="secondary"
+              className="inline-flex items-center bg-green-100 text-green-800 px-6 py-3 rounded-full mb-6"
+            >
+              <Award className="w-4 h-4 mr-2" />
+              Официальное партнерство
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6">
+              Мы сотрудничаем с{" "}
+              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                Dr.Web
+              </span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Официальный партнер-новичок ООО «Доктор Веб» с прямыми поставками и партнерскими ценами
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500"></div>
+              <CardContent className="p-8">
+                <div className="flex items-center space-x-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
+                    <Award className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Сертифицированный партнер</h3>
+                    <p className="text-sm text-muted-foreground">Официальный статус партнера-новичка</p>
+                  </div>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Прямые поставки от производителя
+                  </li>
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Партнерские скидки до 35%
+                  </li>
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Официальная гарантия качества
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+              <CardContent className="p-8">
+                <div className="flex items-center space-x-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+                    <Headphones className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Квалифицированная поддержка</h3>
+                    <p className="text-sm text-muted-foreground">Эксперты с многолетним опытом</p>
+                  </div>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Техподдержка 24/7 на русском языке
+                  </li>
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Помощь при внедрении и настройке
+                  </li>
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Обучение персонала работе с продуктом
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+              <CardContent className="p-8">
+                <div className="flex items-center space-x-4 mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
+                    <Rocket className="w-8 h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Быстрая доставка</h3>
+                    <p className="text-sm text-muted-foreground">По всей России без задержек</p>
+                  </div>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Мгновенная доставка лицензий
+                  </li>
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Работаем без наценок
+                  </li>
+                  <li className="flex items-center text-sm text-muted-foreground">
+                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                    Цены от производителя
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="mt-12 bg-gradient-to-r from-green-900 via-blue-900 to-purple-900 rounded-3xl p-8 text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-black/20"></div>
+            <div className="relative z-10">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold mb-4">Почему выбирают нас</h3>
+                <p className="text-green-200">Более 10,000 довольных клиентов по всей России</p>
+              </div>
+
+              <div className="grid md:grid-cols-4 gap-6 text-center">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <div className="text-3xl font-black text-green-400 mb-2">30+</div>
+                  <div className="text-sm text-gray-300">лет опыта Dr.Web</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <div className="text-3xl font-black text-blue-400 mb-2">500M+</div>
+                  <div className="text-sm text-gray-300">защищенных устройств</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <div className="text-3xl font-black text-purple-400 mb-2">99.9%</div>
+                  <div className="text-sm text-gray-300">обнаружение угроз</div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                  <div className="text-3xl font-black text-pink-400 mb-2">24/7</div>
+                  <div className="text-sm text-gray-300">техподдержка</div>
+                </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                <div className="flex items-center justify-center space-x-4 mb-4">
+                  <img
+                    src="logo_novice_partner.svg"
+                    alt="Novice Partner Logo"
+                    className="w-12 h-12"
+                  />
+                  <span className="text-2xl font-bold">×</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg font-semibold">Мы сотрудничаем с Dr.Web</span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-300">
+                  ООО «Доктор Веб» — российский разработчик средств информационной безопасности с 1992 года
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Footer */}
@@ -2271,7 +2431,7 @@ export default function DrWebLanding() {
                       Контактная информация:
                     </p>
                     <ul className="space-y-1 text-gray-400">
-                      <li>ИНН: 123456789012</li>
+                      <li>ИНН: 637607810692</li>
                       <li>Телефон: +7 987 167-01-68</li>
                       <li>Email: info@gundyrev.com</li>
                       <li>Часы работы: Пн-Пт 9:00-18:00</li>
@@ -2363,7 +2523,7 @@ export default function DrWebLanding() {
                   &copy; 2025 Dr.Web. Все права защищены.
                 </p>
                 <div className="text-xs text-gray-500">
-                  <p>Сайт партнера ООО «Доктор Веб» | ИНН: 123456789012</p>
+                  <p>Сайт партнера ООО «Доктор Веб» | ИНН: 637607810692</p>
                   <p>Контакты партнера: +7 987 167-01-68 | info@gundyrev.com</p>
                   <p className="mt-1">
                     <span className="text-green-400">«Доктор Веб»</span> —
