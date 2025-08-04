@@ -210,20 +210,9 @@ export default function DrWebLanding() {
                 />
               </div>
               <div>
-                <span className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-gray-900 to-green-600 bg-clip-text text-transparent">
-                  Dr.Web
-                </span>
                 <div className="flex items-center space-x-2">
-                  <div className="flex space-x-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-1.5 h-1.5 sm:w-2 sm:h-2 text-yellow-400 fill-current"
-                      />
-                    ))}
-                  </div>
                   <span className="text-xs sm:text-sm text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">
-                    Партнер-новичок
+                    Начинающий партнер
                   </span>
                 </div>
               </div>
@@ -346,8 +335,8 @@ export default function DrWebLanding() {
           </div>
         </div>
 
-        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-20 items-center">
             <div className="text-left">
               <Badge
                 variant="secondary"
@@ -366,7 +355,7 @@ export default function DrWebLanding() {
                 </div>
               </Badge>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-foreground mb-6 sm:mb-8 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-foreground mb-4 sm:mb-6 md:mb-8 leading-tight">
                 <span className="block animate-slide-in-left">
                   Антивирус для
                 </span>
@@ -377,15 +366,15 @@ export default function DrWebLanding() {
                   госучреждений
                 </span>
                 <span
-                  className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold mt-2 sm:mt-4 animate-slide-in-left"
+                  className="block text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold mt-2 sm:mt-3 md:mt-4 animate-slide-in-left"
                   style={{ animationDelay: "0.4s" }}
                 >
-                  и <span className="text-green-600">корпораций</span>
+                  <span className="text-green-600">и корпораций</span>
                 </span>
               </h1>
 
               <p
-                className="text-base sm:text-lg lg:text-xl text-muted-foreground mb-8 sm:mb-10 lg:mb-12 max-w-2xl leading-relaxed animate-fade-in-up"
+                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl text-muted-foreground mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl leading-relaxed animate-fade-in-up"
                 style={{ animationDelay: "0.6s" }}
               >
                 <span className="text-green-600 font-bold text-lg sm:text-xl lg:text-2xl">
@@ -408,7 +397,7 @@ export default function DrWebLanding() {
               </p>
 
               <div
-                className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-8 sm:mb-10 lg:mb-12 animate-scale-in"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 animate-scale-in"
                 style={{ animationDelay: "0.8s" }}
               >
                 <Button
@@ -442,7 +431,7 @@ export default function DrWebLanding() {
 
               {/* Live Stats */}
               <div
-                className="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up"
+                className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 animate-fade-in-up"
                 style={{ animationDelay: "1s" }}
               >
                 {[
@@ -475,16 +464,16 @@ export default function DrWebLanding() {
                     key={index}
                     className="group text-center border-0 bg-background/80 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3"
                   >
-                    <CardContent className="p-6">
+                    <CardContent className="p-3 sm:p-4 md:p-6">
                       <div
-                        className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-125 transition-transform duration-300`}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3 group-hover:scale-125 transition-transform duration-300`}
                       >
-                        <stat.icon className="w-6 h-6 text-white" />
+                        <stat.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                       </div>
-                      <div className="text-2xl font-black text-foreground mb-1">
+                      <div className="text-lg sm:text-xl md:text-2xl font-black text-foreground mb-1">
                         {stat.number}
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-xs sm:text-sm text-muted-foreground">
                         {stat.text}
                       </div>
                     </CardContent>
@@ -498,10 +487,7 @@ export default function DrWebLanding() {
               <Card className="relative w-full transform hover:scale-105 transition-transform duration-500 shadow-2xl border-0 bg-background/90 backdrop-blur-sm">
                 <CardContent className="p-8">
                   <div className="text-center">
-                    <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mx-auto mb-6 flex items-center justify-center animate-pulse-slow">
-                      <Shield className="w-12 h-12 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-foreground mb-4">
+                    <h3 className="text-2xl font-bold text-foreground mb-6">
                       Защита активна
                     </h3>
                     <div className="space-y-3">
@@ -578,7 +564,7 @@ export default function DrWebLanding() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
             {[
               {
                 icon: Building,
@@ -763,7 +749,7 @@ export default function DrWebLanding() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               {
                 icon: Globe,
@@ -999,18 +985,18 @@ export default function DrWebLanding() {
           </div>
 
           {/* Compliance Badges */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-gray-100">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-foreground mb-4">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xl border border-gray-100">
+            <div className="text-center mb-6 sm:mb-8">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-3 sm:mb-4">
                 Сертификаты и соответствие
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-sm sm:text-base text-muted-foreground max-w-3xl mx-auto">
                 Dr.Web имеет все необходимые сертификаты для работы в госсекторе
                 и защиты критически важной инфраструктуры
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
               {[
                 {
                   name: "ФСТЭК России",
@@ -1041,16 +1027,16 @@ export default function DrWebLanding() {
                   key={index}
                   className="text-center border-0 shadow-md hover:shadow-xl transition-all duration-300 group"
                 >
-                  <CardContent className="p-6">
+                  <CardContent className="p-4 sm:p-6">
                     <div
-                      className={`w-16 h-16 ${cert.color} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                      className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 ${cert.color} rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300`}
                     >
-                      <cert.icon className="w-8 h-8" />
+                      <cert.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />
                     </div>
-                    <h4 className="font-bold text-foreground mb-2 text-lg">
+                    <h4 className="font-bold text-foreground mb-2 text-base sm:text-lg">
                       {cert.name}
                     </h4>
-                    <p className="text-sm font-semibold text-green-600 mb-3">
+                    <p className="text-xs sm:text-sm font-semibold text-green-600 mb-2 sm:mb-3">
                       {cert.desc}
                     </p>
                     <p className="text-xs text-muted-foreground leading-relaxed">
@@ -1061,7 +1047,7 @@ export default function DrWebLanding() {
               ))}
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-4 sm:mt-6">
               {[
                 {
                   name: "Единый реестр ПО",
@@ -1092,16 +1078,16 @@ export default function DrWebLanding() {
                   key={index}
                   className="text-center border-0 shadow-sm hover:shadow-md transition-all duration-300 group"
                 >
-                  <CardContent className="p-4">
+                  <CardContent className="p-3 sm:p-4">
                     <div
-                      className={`w-10 h-10 ${cert.color} rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`}
+                      className={`w-8 h-8 sm:w-10 sm:h-10 ${cert.color} rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300`}
                     >
-                      <cert.icon className="w-5 h-5" />
+                      <cert.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <h5 className="font-bold text-foreground mb-1 text-sm">
+                    <h5 className="font-bold text-foreground mb-1 text-xs sm:text-sm">
                       {cert.name}
                     </h5>
-                    <p className="text-xs text-muted-foreground">{cert.desc}</p>
+                    <p className="text-xs text-muted-foreground leading-tight">{cert.desc}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -1110,220 +1096,6 @@ export default function DrWebLanding() {
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 to-transparent"></div>
-          <div className="tech-lines"></div>
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-20" data-animate id="benefits-header">
-            <h2 className="text-4xl md:text-5xl font-black mb-6">
-              Почему{" "}
-              <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                Dr.Web
-              </span>{" "}
-              - лучший выбор?
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Уникальные технологии и 30-летний опыт делают Dr.Web самым
-              надежным антивирусом
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: "Неубиваемая защита",
-                description:
-                  "Самозащита от отключения вредоносами. Работает даже когда другие антивирусы сдаются.",
-                stat: "99.9%",
-                statLabel: "надежность",
-              },
-              {
-                icon: Zap,
-                title: "Молниеносная реакция",
-                description:
-                  "Новые угрозы блокируются в течение часов, а не дней как у конкурентов.",
-                stat: "< 1ч",
-                statLabel: "реакция на угрозы",
-              },
-              {
-                icon: Cpu,
-                title: "Не тормозит систему",
-                description:
-                  "Работает в фоне незаметно. Минимальное потребление ресурсов даже на старых ПК.",
-                stat: "< 5%",
-                statLabel: "нагрузка на CPU",
-              },
-              {
-                icon: Globe,
-                title: "Все платформы",
-                description:
-                  "Единое решение для Windows, Linux, macOS, Android, iOS. Централизованное управление.",
-                stat: "15+",
-                statLabel: "поддерживаемых ОС",
-              },
-              {
-                icon: Code,
-                title: "Российская разработка",
-                description:
-                  "Полный контроль над кодом. Соответствие требованиям безопасности РФ.",
-                stat: "100%",
-                statLabel: "контроль кода",
-              },
-              {
-                icon: Headphones,
-                title: "Премиум поддержка",
-                description:
-                  "Техподдержка 24/7 на русском языке. Решаем любые вопросы быстро и профессионально.",
-                stat: "24/7",
-                statLabel: "техподдержка",
-              },
-            ].map((benefit, index) => (
-              <div
-                key={index}
-                className={`group ${
-                  visibleElements.has("benefits-header")
-                    ? "animate-slide-in-up"
-                    : "opacity-0"
-                }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700 hover:border-green-500/50 transition-all duration-500 transform hover:-translate-y-2 hover:bg-gray-800/70 relative overflow-hidden h-full">
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                  <CardContent className="p-8 relative z-10">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                      <benefit.icon className="w-8 h-8 text-white" />
-                    </div>
-
-                    <h3 className="text-xl font-bold mb-4 text-white">
-                      {benefit.title}
-                    </h3>
-                    <p className="text-gray-300 mb-6 leading-relaxed">
-                      {benefit.description}
-                    </p>
-
-                    <div className="flex items-end space-x-2">
-                      <div className="text-3xl font-black text-green-400">
-                        {benefit.stat}
-                      </div>
-                      <div className="text-sm text-gray-400 pb-1">
-                        {benefit.statLabel}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
-          </div>
-
-          {/* Why Choose Us Subsection */}
-          <div className="mt-20">
-            <div className="text-center mb-16">
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                  Преимущества работы с нами
-                </span>
-              </h3>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                Официальный партнер-новичок ООО «Доктор Веб» с квалифицированной
-                поддержкой и партнерскими ценами
-              </p>
-              <div className="mt-6 flex flex-wrap justify-center gap-4">
-                <Badge
-                  variant="secondary"
-                  className="bg-green-900/30 text-green-300 px-4 py-2"
-                >
-                  <Award className="w-4 h-4 mr-2" />
-                  Сертифицированный партнер
-                </Badge>
-                <Badge
-                  variant="secondary"
-                  className="bg-blue-900/30 text-blue-300 px-4 py-2"
-                >
-                  <ShieldCheck className="w-4 h-4 mr-2" />
-                  Партнерские скидки до 35%
-                </Badge>
-                <Badge
-                  variant="secondary"
-                  className="bg-purple-900/30 text-purple-300 px-4 py-2"
-                >
-                  <Headphones className="w-4 h-4 mr-2" />
-                  Квалифицированная поддержка
-                </Badge>
-              </div>
-            </div>
-
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-600/10 via-emerald-600/5 to-blue-600/10 rounded-3xl"></div>
-              <div className="relative grid md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
-                {[
-                  {
-                    icon: Award,
-                    title: "Сертифицированные специалисты",
-                    description: "Эксперты Dr Web с многолетним опытом",
-                    accent: "border-l-4 border-l-blue-400",
-                  },
-                  {
-                    icon: Rocket,
-                    title: "Быстрая доставка",
-                    description: "Быстрая доставка лицензий по всей России",
-                    accent: "border-l-4 border-l-purple-400",
-                  },
-                  {
-                    icon: Target,
-                    title: "Официальные цены",
-                    description: "Работаем без наценок, цены от производителя",
-                    accent: "border-l-4 border-l-green-400",
-                  },
-                  {
-                    icon: Headphones,
-                    title: "Техподдержка 24/7",
-                    description:
-                      "Помощь на всех этапах внедрения и использования",
-                    accent: "border-l-4 border-l-orange-400",
-                  },
-                  {
-                    icon: Users,
-                    title: "Обучение персонала",
-                    description: "Обучаем ваших сотрудников работе с продуктом",
-                    accent: "border-l-4 border-l-pink-400",
-                  },
-                  {
-                    icon: Shield,
-                    title: "Гарантия качества",
-                    description: "10,000+ довольных клиентов по всей стране",
-                    accent: "border-l-4 border-l-emerald-400",
-                  },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className={`bg-black/20 backdrop-blur-md ${item.accent} rounded-xl p-6 hover:bg-black/30 hover:transform hover:-translate-y-2 transition-all duration-300 group shadow-xl`}
-                  >
-                    <div className="flex items-start space-x-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-white/20 to-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
-                        <item.icon className="w-7 h-7 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-xl font-bold text-white mb-3 group-hover:text-green-300 transition-colors">
-                          {item.title}
-                        </h4>
-                        <p className="text-gray-200 leading-relaxed">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Calculator Section */}
       <section id="calculator" className="py-20 bg-white">
@@ -1358,9 +1130,9 @@ export default function DrWebLanding() {
                 : "opacity-0"
             }`}
           >
-            <div className="p-12">
-              <div className="grid lg:grid-cols-2 gap-12">
-                <div className="space-y-8">
+            <div className="p-4 sm:p-6 md:p-8 lg:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
+                <div className="space-y-6 sm:space-y-8">
                   <div>
                     <label className="block text-sm font-bold text-foreground mb-4 flex items-center">
                       <Target className="w-5 h-5 mr-2 text-green-600" />
@@ -1636,12 +1408,8 @@ export default function DrWebLanding() {
       {/* Testimonials Section */}
       <section
         id="testimonials"
-        className="py-20 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden"
+        className="py-20 bg-gradient-to-br from-gray-800 to-gray-900 text-white relative overflow-hidden"
       >
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-green-900/20 to-transparent"></div>
-          <div className="stars-bg"></div>
-        </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div
@@ -1651,7 +1419,7 @@ export default function DrWebLanding() {
           >
             <Badge
               variant="secondary"
-              className="inline-flex items-center bg-purple-800/50 backdrop-blur-sm text-purple-200 px-6 py-3 rounded-full mb-6 border border-purple-700/50"
+              className="inline-flex items-center bg-gray-700/50 backdrop-blur-sm text-gray-200 px-6 py-3 rounded-full mb-6 border border-gray-600/50"
             >
               <MessageCircle className="w-4 h-4 mr-2" />
               Отзывы клиентов
@@ -1662,7 +1430,7 @@ export default function DrWebLanding() {
                 наши клиенты
               </span>
             </h2>
-            <p className="text-xl text-purple-200 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Более 10,000 довольных клиентов выбрали Dr.Web для защиты своего
               бизнеса
             </p>
@@ -1677,15 +1445,6 @@ export default function DrWebLanding() {
           >
             <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
               <CardContent className="p-12 text-center">
-                <div className="flex justify-center mb-6">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-8 h-8 text-yellow-400 fill-current"
-                    />
-                  ))}
-                </div>
-
                 <blockquote className="text-2xl md:text-3xl font-medium text-white mb-8 leading-relaxed">
                   &ldquo;{testimonials[currentTestimonial].text}&rdquo;
                 </blockquote>
@@ -1749,7 +1508,7 @@ export default function DrWebLanding() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               {
                 icon: Cpu,
@@ -2237,11 +1996,11 @@ export default function DrWebLanding() {
               </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Официальный партнер-новичок ООО «Доктор Веб» с прямыми поставками и партнерскими ценами
+              Официальный начинающий партнер ООО «Доктор Веб» с прямыми поставками и партнерскими ценами
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500"></div>
               <CardContent className="p-8">
@@ -2251,7 +2010,7 @@ export default function DrWebLanding() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-foreground">Сертифицированный партнер</h3>
-                    <p className="text-sm text-muted-foreground">Официальный статус партнера-новичка</p>
+                    <p className="text-sm text-muted-foreground">Официальный статус начинающего партнера</p>
                   </div>
                 </div>
                 <ul className="space-y-3">
@@ -2330,59 +2089,17 @@ export default function DrWebLanding() {
             </Card>
           </div>
 
-          <div className="mt-12 bg-gradient-to-r from-green-900 via-blue-900 to-purple-900 rounded-3xl p-8 text-white relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/20"></div>
-            <div className="relative z-10">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-4">Почему выбирают нас</h3>
-                <p className="text-green-200">Более 10,000 довольных клиентов по всей России</p>
-              </div>
 
-              <div className="grid md:grid-cols-4 gap-6 text-center">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <div className="text-3xl font-black text-green-400 mb-2">30+</div>
-                  <div className="text-sm text-gray-300">лет опыта Dr.Web</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <div className="text-3xl font-black text-blue-400 mb-2">500M+</div>
-                  <div className="text-sm text-gray-300">защищенных устройств</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <div className="text-3xl font-black text-purple-400 mb-2">99.9%</div>
-                  <div className="text-sm text-gray-300">обнаружение угроз</div>
-                </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <div className="text-3xl font-black text-pink-400 mb-2">24/7</div>
-                  <div className="text-sm text-gray-300">техподдержка</div>
-                </div>
-              </div>
-
-              <div className="mt-8 text-center">
-                <div className="flex items-center justify-center space-x-4 mb-4">
-                  <img
-                    src="logo_novice_partner.svg"
-                    alt="Novice Partner Logo"
-                    className="w-12 h-12"
-                  />
-                  <span className="text-2xl font-bold">×</span>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-lg font-semibold">Мы сотрудничаем с Dr.Web</span>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-300">
-                  ООО «Доктор Веб» — российский разработчик средств информационной безопасности с 1992 года
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
+
+
 
       {/* Footer */}
       <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-8 sm:py-12 lg:py-16 relative overflow-hidden">
         <div className="absolute inset-0 bg-circuit-pattern opacity-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12">
             <div className="md:col-span-2">
               <div className="flex items-center space-x-3 sm:space-x-4 mb-6 sm:mb-8 group">
                 <img
@@ -2392,60 +2109,69 @@ export default function DrWebLanding() {
                 />
                 <div>
                   <span className="text-2xl sm:text-3xl font-bold">Dr.Web</span>
-                  <div className="flex items-center space-x-2">
-                    <div className="flex space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-1.5 h-1.5 sm:w-2 sm:h-2 text-yellow-400 fill-current"
-                        />
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
               <p className="text-gray-300 mb-6 leading-relaxed text-lg">
-                Официальный партнер-новичок ООО «Доктор Веб» в России. Продажа и
+                Официальный начинающий партнер ООО «Доктор Веб» в России. Продажа и
                 внедрение антивирусных решений Dr.Web для бизнеса и
                 государственных учреждений. Более 10,000 довольных клиентов по
                 всей стране.
               </p>
-              <div className="text-sm text-gray-400 mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-600">
-                <p className="mb-3 text-green-400 font-semibold">
-                  О компании-партнере:
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <p className="font-medium text-gray-300 mb-2">
-                      Наши услуги:
-                    </p>
-                    <ul className="space-y-1 text-gray-400">
-                      <li>• Консультации по выбору решений</li>
-                      <li>• Поставка лицензий Dr.Web</li>
-                      <li>• Техническая поддержка</li>
-                      <li>• Гарантированное сопровождение</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-300 mb-2">
-                      Контактная информация:
-                    </p>
-                    <ul className="space-y-1 text-gray-400">
-                      <li>ИНН: 637607810692</li>
-                      <li>Телефон: +7 987 167-01-68</li>
-                      <li>Email: info@gundyrev.com</li>
-                      <li>Часы работы: Пн-Пт 9:00-18:00</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="mt-4 text-xs text-gray-500">
-                  <p>
-                    Цены и предложения актуальны согласно Руководству по
-                    лицензированию и ценообразованию программных продуктов
-                    Dr.Web для партнеров на территории Российской Федерации
-                    (действует с 01.04.2025)
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
+                <div className="text-sm text-gray-400 p-6 bg-gray-800/50 rounded-lg border border-gray-600">
+                  <p className="mb-4 text-green-400 font-semibold text-base">
+                    О компании-партнере:
                   </p>
+                  <div className="space-y-6">
+                    <div>
+                      <p className="font-medium text-gray-300 mb-3 text-sm">
+                        Наши услуги:
+                      </p>
+                      <ul className="space-y-2 text-gray-400 text-sm">
+                        <li>• Консультации по выбору решений</li>
+                        <li>• Поставка лицензий Dr.Web</li>
+                        <li>• Техническая поддержка</li>
+                        <li>• Гарантированное сопровождение</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-300 mb-3 text-sm">
+                        Контактная информация:
+                      </p>
+                      <ul className="space-y-2 text-gray-400 text-sm">
+                        <li><span className="text-gray-300">ИНН:</span> 637607810692</li>
+                        <li><span className="text-gray-300">Телефон:</span> +7 987 167-01-68</li>
+                        <li><span className="text-gray-300">Email:</span> info@gundyrev.com</li>
+                        <li><span className="text-gray-300">Часы работы:</span> Пн-Пт 9:00-18:00</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
+                
+                <div className="text-sm text-gray-400 p-4 sm:p-6 bg-gray-800/50 rounded-lg border border-gray-600 flex flex-col items-center justify-center text-center">
+                  <img
+                    src="logo_novice_partner.svg"
+                    alt="Novice Partner Logo"
+                    className="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mb-4 hover:scale-105 transition-transform duration-300"
+                  />
+                  <div>
+                    <p className="font-bold text-green-400 text-lg mb-1">
+                      Начинающий партнер
+                    </p>
+                    <p className="text-gray-300 font-semibold">
+                      ООО «Доктор Веб»
+                    </p>
+                    <p className="text-gray-400 text-xs mt-2">
+                      Официальный статус партнерства
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 text-xs text-gray-500">
+                <p>
+                  Информация на сайте носит справочный характер и не является публичной офертой. 
+                  Окончательные условия поставки и цены уточняйте у менеджера.
+                </p>
               </div>
               <div className="flex items-center space-x-3 text-green-400 font-semibold text-lg">
                 <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full flex items-center justify-center animate-pulse">
@@ -2520,7 +2246,7 @@ export default function DrWebLanding() {
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
                 <p className="text-gray-400 mb-2">
-                  &copy; 2025 Dr.Web. Все права защищены.
+                  &copy; 2025 ИП Гундырев Д.С. Все права защищены.
                 </p>
                 <div className="text-xs text-gray-500">
                   <p>Сайт партнера ООО «Доктор Веб» | ИНН: 637607810692</p>
@@ -2530,13 +2256,13 @@ export default function DrWebLanding() {
                     российский разработчик средств информационной безопасности с
                     1992 года
                   </p>
-                  <p className="mt-1 text-yellow-400">
+                  <p className="mt-1 text-gray-500">
                     Официальный сайт Dr.Web:{" "}
                     <a
                       href="https://www.drweb.ru"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline hover:text-yellow-300"
+                      className="underline hover:text-gray-400"
                     >
                       www.drweb.ru
                     </a>
