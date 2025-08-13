@@ -165,7 +165,7 @@ export default function DrWebLanding() {
     {
       name: "Сергей Николаев", 
       company: 'АО "ЦИФРОВЫЕ РЕШЕНИЯ УРАЛ"',
-      text: "Гундырев Михаил Александрович помог нам перейти на Dr.Web с минимальными затратами времени. Качественное сопровождение проекта и конкурентные цены.",
+      text: "Гундырев Максим Алексеевич помог нам перейти на Dr.Web с минимальными затратами времени. Качественное сопровождение проекта и конкурентные цены.",
       rating: 5,
     }
   ];
@@ -347,10 +347,10 @@ export default function DrWebLanding() {
 
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
           <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-20 items-center">
-            <div className="text-left">
+            <div className="text-center lg:text-left">
 
 
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-foreground mb-4 sm:mb-6 md:mb-8 leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-foreground mb-4 sm:mb-6 md:mb-8 leading-tight text-center lg:text-left">
                 <span className="block animate-slide-in-left">
                   Антивирус для
                 </span>
@@ -369,7 +369,7 @@ export default function DrWebLanding() {
               </h1>
 
               <p
-                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl text-muted-foreground mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl leading-relaxed animate-fade-in-up"
+                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl text-muted-foreground mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl leading-relaxed animate-fade-in-up text-center lg:text-left mx-auto lg:mx-0"
                 style={{ animationDelay: "0.6s" }}
               >
                 <span className="text-green-600 font-bold text-lg sm:text-xl lg:text-2xl">
@@ -395,7 +395,7 @@ export default function DrWebLanding() {
               </p>
 
               <div
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 animate-scale-in"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 animate-scale-in justify-center lg:justify-start"
                 style={{ animationDelay: "0.8s" }}
               >
                 <Button
@@ -429,7 +429,7 @@ export default function DrWebLanding() {
 
               {/* Live Stats */}
               <div
-                className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 animate-fade-in-up"
+                className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 animate-fade-in-up max-w-4xl mx-auto lg:mx-0"
                 style={{ animationDelay: "1s" }}
               >
                 {[
@@ -1726,7 +1726,7 @@ export default function DrWebLanding() {
                         />
                         <span>
                           Согласен на обработку персональных данных в соответствии с{" "}
-                          <a href="#" className="text-green-600 hover:text-green-700 underline">
+                          <a href="/privacy" className="text-green-600 hover:text-green-700 underline">
                             Политикой конфиденциальности
                           </a>
                         </span>
@@ -1740,7 +1740,7 @@ export default function DrWebLanding() {
                         />
                         <span>
                           Принимаю условия{" "}
-                          <a href="#" className="text-green-600 hover:text-green-700 underline">
+                          <a href="/terms" className="text-green-600 hover:text-green-700 underline">
                             Пользовательского соглашения
                           </a>
                         </span>
@@ -1774,7 +1774,7 @@ export default function DrWebLanding() {
           <div className="text-center mb-12">
 
             <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6">
-              Гундырев М.А. сотрудничает с{" "}
+              Гундырев М.А. официальный партнер{" "}
               <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                 Dr.Web
               </span>
@@ -1896,8 +1896,7 @@ export default function DrWebLanding() {
                 <strong>Гундырев.рф</strong> - официальный начинающий партнер ООО «Доктор Веб» в России. 
                 Индивидуальный предприниматель <strong>Гундырев М. А.</strong> специализируется на продаже и
                 внедрении антивирусных решений Dr.Web для бизнеса и
-                государственных учреждений. Более 10,000 довольных клиентов по
-                всей стране.
+                государственных учреждений.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
                 <div className="text-sm text-gray-400 p-6 bg-gray-800/50 rounded-lg border border-gray-600">
@@ -2032,7 +2031,7 @@ export default function DrWebLanding() {
                 </p>
                 <div className="text-xs text-gray-500">
                   <p>Сайт Гундырев.рф - официального партнера ООО «Доктор Веб» | ИП Гундырев М.А. | ИНН: 637607810692</p>
-                  <p>Контакты: Гундырев Михаил Александрович | +7 987 167-01-68 | info@gundyrev.com</p>
+                  <p>Контакты: Гундырев Максим Алексеевич | +7 987 167-01-68 | info@gundyrev.com</p>
                   <p className="mt-1">
                     <span className="text-green-400">«Доктор Веб»</span> —
                     российский разработчик средств информационной безопасности с
