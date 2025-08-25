@@ -161,6 +161,18 @@ npm run build
 npm start
 ```
 
+### Docker Compose
+
+Запуск в Docker с публикацией на порт 3019:
+
+```bash
+docker compose up -d --build
+# Приложение будет доступно на http://localhost:3019
+```
+
+Переменные окружения по умолчанию:
+- `NODE_ENV=production`
+
 ### Vercel (рекомендуется)
 ```bash
 npx vercel --prod
