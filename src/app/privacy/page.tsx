@@ -138,7 +138,7 @@ export default function PrivacyPolicy() {
                 <div className="bg-gray-50 rounded-lg p-4">
                   <p className="text-muted-foreground">
                     <strong>Email:</strong> info@gundyrev.com<br />
-                    <strong>Телефон:</strong> +7 987 167-01-68<br />
+                    <strong>Телефон:</strong> +7 993 077-01-68<br />
                     <strong>ИП Гундырев М.А.</strong><br />
                     <strong>ИНН:</strong> 637607810692
                   </p>

@@ -32,7 +32,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useToast } from "@/components/ui/toast";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -69,6 +70,67 @@ export default function DrWebLanding() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [visibleElements, setVisibleElements] = useState(new Set());
+  const { toast } = useToast();
+
+  // Phone mask + helpers
+  const formatRuPhone = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    let d = digits;
+    if (d.startsWith("8")) d = "7" + d.slice(1);
+    if (!d.startsWith("7")) d = "7" + d;
+    d = d.slice(0, 11);
+    const parts = [
+      "+7",
+      d.slice(1, 4),
+      d.slice(4, 7),
+      d.slice(7, 9),
+      d.slice(9, 11),
+    ];
+    let out = parts[0];
+    if (parts[1]) out += ` ${parts[1]}`;
+    if (parts[2]) out += ` ${parts[2]}`;
+    if (parts[3]) out += `-${parts[3]}`;
+    if (parts[4]) out += `-${parts[4]}`;
+    return out;
+  };
+
+  const sanitizePhone = (value: string) => value.replace(/\D/g, "");
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const validators = useMemo(() => ({
+    name: (v: string) => (v.trim().length >= 2 ? "" : "Введите имя (мин. 2 символа)"),
+    phone: (v: string) => (sanitizePhone(v).length === 11 ? "" : "Введите телефон в формате +7 XXX XXX-XX-XX"),
+    email: (v: string) =>
+      !v
+        ? ""
+        : /^(?:[a-zA-Z0-9_'^&\/+-])+(?:\.(?:[a-zA-Z0-9_'^&\/+-])+)*@(?:(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})$/.test(v)
+        ? ""
+        : "Некорректный email",
+    desktopDevices: (v: string) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
+    serverDevices: (v: string) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
+    mobileDevices: (v: string) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
+  }), []);
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    const check = (k: keyof typeof contactForm) => {
+      const v = (contactForm as any)[k];
+      const fn = (validators as any)[k];
+      if (fn) {
+        const msg = fn(v);
+        if (msg) newErrors[k as string] = msg;
+      }
+    };
+    check("name");
+    check("phone");
+    check("email");
+    check("desktopDevices");
+    check("serverDevices");
+    check("mobileDevices");
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -180,9 +242,59 @@ export default function DrWebLanding() {
     return Math.round(basePrice + masterDownloaderPrice);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Спасибо! Мы свяжемся с вами в ближайшее время.");
+    if (!validateForm()) {
+      toast({
+        title: "Проверьте форму",
+        description: "Заполните обязательные поля корректно",
+        variant: "warning",
+      });
+      return;
+    }
+    try {
+      const plan = plans[calculatorData.plan as keyof typeof plans];
+      const res = await fetch("/api/telegram", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...contactForm,
+          phone: sanitizePhone(contactForm.phone),
+          calculator: {
+            planKey: calculatorData.plan,
+            planName: plan?.name,
+            devices: calculatorData.devices,
+            months: calculatorData.months,
+            estimatedPrice: calculatePrice(),
+          },
+        }),
+      });
+      if (!res.ok) throw new Error("fail");
+      toast({
+        title: "Заявка отправлена",
+        description: "Мы свяжемся с вами в ближайшее время",
+        variant: "success",
+      });
+      setContactForm({
+        name: "",
+        phone: "",
+        email: "",
+        company: "",
+        position: "",
+        orgType: "corporate",
+        desktopDevices: "",
+        serverDevices: "",
+        mobileDevices: "",
+        message: "",
+      });
+      setErrors({});
+    } catch (err) {
+      toast({
+        title: "Ошибка отправки",
+        description: "Попробуйте позже или позвоните нам",
+        variant: "error",
+      });
+    }
   };
 
   useEffect(() => {
@@ -222,7 +334,7 @@ export default function DrWebLanding() {
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="text-xs sm:text-sm text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">
-                    Гундырев.рф
+                    Партнер Dr.Web
                   </span>
                 </div>
               </div>
@@ -257,10 +369,10 @@ export default function DrWebLanding() {
               </nav>
               <Button
                 className="bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 hover:from-green-700 hover:via-green-800 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 ease-smooth transform hover:-translate-y-1 hover:scale-102 text-sm xl:text-base"
-                onClick={() => window.open("tel:+79871670168", "_self")}
+                onClick={() => window.open("tel:+79930770168", "_self")}
               >
                 <Phone className="w-3 h-3 xl:w-4 xl:h-4 mr-1 xl:mr-2" />
-                <span className="hidden xl:inline">+7 987 167-01-68</span>
+                <span className="hidden xl:inline">+7 993 077-01-68</span>
                 <span className="xl:hidden">Звонок</span>
               </Button>
             </div>
@@ -269,7 +381,7 @@ export default function DrWebLanding() {
             <div className="hidden md:flex lg:hidden items-center space-x-4">
               <Button
                 className="bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 text-white shadow-lg text-sm"
-                onClick={() => window.open("tel:+79871670168", "_self")}
+                onClick={() => window.open("tel:+79930770168", "_self")}
               >
                 <Phone className="w-3 h-3 mr-1" />
                 Звонок
@@ -320,10 +432,10 @@ export default function DrWebLanding() {
                 </a>
                 <Button
                   className="w-full mt-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white"
-                  onClick={() => window.open("tel:+79871670168", "_self")}
+                  onClick={() => window.open("tel:+79930770168", "_self")}
                 >
                   <Phone className="w-4 h-4 mr-2" />
-                  +7 987 167-01-68
+                  +7 993 077-01-68
                 </Button>
               </div>
             </div>
@@ -1381,7 +1493,7 @@ export default function DrWebLanding() {
                 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
                   <Phone className="w-8 h-8 text-green-400 mx-auto mb-4" />
                   <h4 className="font-bold mb-2">Телефон</h4>
-                  <p className="text-green-200">+7 987 167-01-68</p>
+                  <p className="text-green-200">+7 993 077-01-68</p>
                   <p className="text-sm text-gray-300">Поддержка Гундырев.рф</p>
                 </div>
 
@@ -1447,7 +1559,7 @@ export default function DrWebLanding() {
                           Горячая линия
                         </h4>
                         <p className="text-muted-foreground text-base sm:text-lg font-semibold">
-                          +7 987 167-01-68
+                          +7 993 077-01-68
                         </p>
                         <p className="text-xs sm:text-sm text-muted-foreground">
                           Бесплатно по России • Круглосуточно
@@ -1540,9 +1652,16 @@ export default function DrWebLanding() {
                               name: e.target.value,
                             })
                           }
+                          onBlur={() =>
+                            setErrors((p) => ({ ...p, name: validators.name(contactForm.name) }))
+                          }
+                          aria-invalid={!!errors.name || undefined}
                           placeholder="Ваше имя"
                           className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
                         />
+                        {errors.name && (
+                          <p className="text-xs text-red-600 mt-1">{errors.name}</p>
+                        )}
                       </div>
 
                       <div>
@@ -1556,12 +1675,19 @@ export default function DrWebLanding() {
                           onChange={(e) =>
                             setContactForm({
                               ...contactForm,
-                              phone: e.target.value,
+                              phone: formatRuPhone(e.target.value),
                             })
                           }
-                          placeholder="+7 (000) 000-00-00"
+                          onBlur={() =>
+                            setErrors((p) => ({ ...p, phone: validators.phone(contactForm.phone) }))
+                          }
+                          aria-invalid={!!errors.phone || undefined}
+                          placeholder="+7 000 000-00-00"
                           className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
                         />
+                        {errors.phone && (
+                          <p className="text-xs text-red-600 mt-1">{errors.phone}</p>
+                        )}
                       </div>
                     </div>
 
@@ -1578,9 +1704,16 @@ export default function DrWebLanding() {
                             email: e.target.value,
                           })
                         }
+                        onBlur={() =>
+                          setErrors((p) => ({ ...p, email: validators.email(contactForm.email) }))
+                        }
+                        aria-invalid={!!errors.email || undefined}
                         placeholder="email@example.com"
                         className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
                       />
+                      {errors.email && (
+                        <p className="text-xs text-red-600 mt-1">{errors.email}</p>
+                      )}
                     </div>
 
                     <div>
@@ -1650,16 +1783,22 @@ export default function DrWebLanding() {
                         </label>
                         <Input
                           type="number"
+                          inputMode="numeric"
                           value={contactForm.desktopDevices}
-                          onChange={(e) =>
-                            setContactForm({
-                              ...contactForm,
-                              desktopDevices: e.target.value,
-                            })
+                          onChange={(e) => {
+                            const v = e.target.value.replace(/[^0-9]/g, "");
+                            setContactForm({ ...contactForm, desktopDevices: v });
+                          }}
+                          onBlur={() =>
+                            setErrors((p) => ({ ...p, desktopDevices: validators.desktopDevices(contactForm.desktopDevices) }))
                           }
+                          aria-invalid={!!errors.desktopDevices || undefined}
                           placeholder="Desktop"
                           className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
                         />
+                        {errors.desktopDevices && (
+                          <p className="text-xs text-red-600 mt-1">{errors.desktopDevices}</p>
+                        )}
                       </div>
                       
                       <div>
@@ -1668,16 +1807,22 @@ export default function DrWebLanding() {
                         </label>
                         <Input
                           type="number"
+                          inputMode="numeric"
                           value={contactForm.serverDevices}
-                          onChange={(e) =>
-                            setContactForm({
-                              ...contactForm,
-                              serverDevices: e.target.value,
-                            })
+                          onChange={(e) => {
+                            const v = e.target.value.replace(/[^0-9]/g, "");
+                            setContactForm({ ...contactForm, serverDevices: v });
+                          }}
+                          onBlur={() =>
+                            setErrors((p) => ({ ...p, serverDevices: validators.serverDevices(contactForm.serverDevices) }))
                           }
+                          aria-invalid={!!errors.serverDevices || undefined}
                           placeholder="Server"
                           className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
                         />
+                        {errors.serverDevices && (
+                          <p className="text-xs text-red-600 mt-1">{errors.serverDevices}</p>
+                        )}
                       </div>
                       
                       <div>
@@ -1686,16 +1831,22 @@ export default function DrWebLanding() {
                         </label>
                         <Input
                           type="number"
+                          inputMode="numeric"
                           value={contactForm.mobileDevices}
-                          onChange={(e) =>
-                            setContactForm({
-                              ...contactForm,
-                              mobileDevices: e.target.value,
-                            })
+                          onChange={(e) => {
+                            const v = e.target.value.replace(/[^0-9]/g, "");
+                            setContactForm({ ...contactForm, mobileDevices: v });
+                          }}
+                          onBlur={() =>
+                            setErrors((p) => ({ ...p, mobileDevices: validators.mobileDevices(contactForm.mobileDevices) }))
                           }
+                          aria-invalid={!!errors.mobileDevices || undefined}
                           placeholder="Mobile"
                           className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
                         />
+                        {errors.mobileDevices && (
+                          <p className="text-xs text-red-600 mt-1">{errors.mobileDevices}</p>
+                        )}
                       </div>
                     </div>
 
@@ -1921,7 +2072,7 @@ export default function DrWebLanding() {
                       </p>
                       <ul className="space-y-2 text-gray-400 text-sm">
                         <li><span className="text-gray-300">ИНН:</span> 637607810692</li>
-                        <li><span className="text-gray-300">Телефон:</span> +7 987 167-01-68</li>
+                        <li><span className="text-gray-300">Телефон:</span> +7 993 077-01-68</li>
                         <li><span className="text-gray-300">Email:</span> info@gundyrev.com</li>
                         <li><span className="text-gray-300">Часы работы:</span> Пн-Пт 9:00-18:00</li>
                       </ul>
@@ -2000,7 +2151,7 @@ export default function DrWebLanding() {
                 <div className="flex items-center space-x-3 group cursor-pointer hover:text-green-400 transition-colors">
                   <Phone className="w-5 h-5 text-green-400 group-hover:scale-110 transition-transform" />
                   <span className="text-lg font-semibold">
-                    +7 987 167-01-68
+                    +7 993 077-01-68
                   </span>
                 </div>
                 <div className="flex items-center space-x-3 group cursor-pointer hover:text-green-400 transition-colors">
@@ -2031,7 +2182,7 @@ export default function DrWebLanding() {
                 </p>
                 <div className="text-xs text-gray-500">
                   <p>Сайт Гундырев.рф - официального партнера ООО «Доктор Веб» | ИП Гундырев М.А. | ИНН: 637607810692</p>
-                  <p>Контакты: Гундырев Максим Алексеевич | +7 987 167-01-68 | info@gundyrev.com</p>
+                  <p>Контакты: Гундырев Максим Алексеевич | +7 993 077-01-68 | info@gundyrev.com</p>
                   <p className="mt-1">
                     <span className="text-green-400">«Доктор Веб»</span> —
                     российский разработчик средств информационной безопасности с
