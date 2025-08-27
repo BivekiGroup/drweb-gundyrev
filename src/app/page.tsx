@@ -11,12 +11,10 @@ import {
   Code,
   Cpu,
   Fingerprint,
-  Globe,
   Headphones,
   Lock,
   Mail,
   Menu,
-  MessageCircle,
   Monitor,
   MousePointer,
   Phone,
@@ -30,9 +28,9 @@ import {
   TrendingUp,
   Users,
   X,
-  Zap,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useToast } from "@/components/ui/toast";
 
 import { Badge } from "@/components/ui/badge";
@@ -54,7 +52,20 @@ export default function DrWebLanding() {
     months: 12,
   });
 
-  const [contactForm, setContactForm] = useState({
+  type ContactForm = {
+    name: string;
+    phone: string;
+    email: string;
+    company: string;
+    position: string;
+    orgType: "corporate" | "government" | "non-profit";
+    desktopDevices: string;
+    serverDevices: string;
+    mobileDevices: string;
+    message: string;
+  };
+
+  const [contactForm, setContactForm] = useState<ContactForm>({
     name: "",
     phone: "",
     email: "",
@@ -98,25 +109,32 @@ export default function DrWebLanding() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const validators = useMemo(() => ({
-    name: (v: string) => (v.trim().length >= 2 ? "" : "Введите имя (мин. 2 символа)"),
-    phone: (v: string) => (sanitizePhone(v).length === 11 ? "" : "Введите телефон в формате +7 XXX XXX-XX-XX"),
-    email: (v: string) =>
+  type ValidatorMap = { [K in keyof ContactForm]: (v: ContactForm[K]) => string };
+
+  const validators: ValidatorMap = useMemo(() => ({
+    name: (v) => (String(v).trim().length >= 2 ? "" : "Введите имя (мин. 2 символа)"),
+    phone: (v) => (sanitizePhone(String(v)).length === 11 ? "" : "Введите телефон в формате +7 XXX XXX-XX-XX"),
+    email: (v) =>
       !v
         ? ""
-        : /^(?:[a-zA-Z0-9_'^&\/+-])+(?:\.(?:[a-zA-Z0-9_'^&\/+-])+)*@(?:(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})$/.test(v)
+        : /^(?:[a-zA-Z0-9_'^&\/+-])+(?:\.(?:[a-zA-Z0-9_'^&\/+-])+)*@(?:(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})$/.test(String(v))
         ? ""
         : "Некорректный email",
-    desktopDevices: (v: string) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
-    serverDevices: (v: string) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
-    mobileDevices: (v: string) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
+    desktopDevices: (v) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
+    serverDevices: (v) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
+    mobileDevices: (v) => (!v || Number(v) >= 0 ? "" : "Некорректное число"),
+    // No-op validators for optional fields
+    company: () => "",
+    position: () => "",
+    orgType: () => "",
+    message: () => "",
   }), []);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    const check = (k: keyof typeof contactForm) => {
-      const v = (contactForm as any)[k];
-      const fn = (validators as any)[k];
+    const check = <K extends keyof ContactForm>(k: K) => {
+      const v = contactForm[k];
+      const fn = validators[k] as ((val: ContactForm[K]) => string) | undefined;
       if (fn) {
         const msg = fn(v);
         if (msg) newErrors[k as string] = msg;
@@ -288,7 +306,7 @@ export default function DrWebLanding() {
         message: "",
       });
       setErrors({});
-    } catch (err) {
+    } catch {
       toast({
         title: "Ошибка отправки",
         description: "Попробуйте позже или позвоните нам",
@@ -325,10 +343,13 @@ export default function DrWebLanding() {
           <div className="flex justify-between items-center h-16 sm:h-18 lg:h-20">
             <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 group">
               <div className="relative">
-                <img
-                  src="logo-drweb.svg"
+                <Image
+                  src="/logo-drweb.svg"
                   alt="Dr.Web Logo"
+                  width={64}
+                  height={64}
                   className="w-16 h-16 transition-transform duration-300 group-hover:scale-110"
+                  priority
                 />
               </div>
               <div>
@@ -1653,7 +1674,7 @@ export default function DrWebLanding() {
                             })
                           }
                           onBlur={() =>
-                            setErrors((p) => ({ ...p, name: validators.name(contactForm.name) }))
+                            setErrors((p) => ({ ...p, name: validators.name?.(contactForm.name) ?? "" }))
                           }
                           aria-invalid={!!errors.name || undefined}
                           placeholder="Ваше имя"
@@ -1679,7 +1700,7 @@ export default function DrWebLanding() {
                             })
                           }
                           onBlur={() =>
-                            setErrors((p) => ({ ...p, phone: validators.phone(contactForm.phone) }))
+                            setErrors((p) => ({ ...p, phone: validators.phone?.(contactForm.phone) ?? "" }))
                           }
                           aria-invalid={!!errors.phone || undefined}
                           placeholder="+7 000 000-00-00"
@@ -1705,7 +1726,7 @@ export default function DrWebLanding() {
                           })
                         }
                         onBlur={() =>
-                          setErrors((p) => ({ ...p, email: validators.email(contactForm.email) }))
+                          setErrors((p) => ({ ...p, email: validators.email?.(contactForm.email) ?? "" }))
                         }
                         aria-invalid={!!errors.email || undefined}
                         placeholder="email@example.com"
@@ -1761,7 +1782,7 @@ export default function DrWebLanding() {
                         onChange={(e) =>
                           setContactForm({
                             ...contactForm,
-                            orgType: e.target.value,
+                            orgType: e.target.value as ContactForm["orgType"],
                           })
                         }
                         className="w-full p-5 border-2 border-input rounded-2xl focus:ring-4 focus:ring-green-500/30 focus:border-green-500 appearance-none bg-background text-foreground font-semibold shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer"
@@ -1790,7 +1811,7 @@ export default function DrWebLanding() {
                             setContactForm({ ...contactForm, desktopDevices: v });
                           }}
                           onBlur={() =>
-                            setErrors((p) => ({ ...p, desktopDevices: validators.desktopDevices(contactForm.desktopDevices) }))
+                            setErrors((p) => ({ ...p, desktopDevices: validators.desktopDevices?.(contactForm.desktopDevices) ?? "" }))
                           }
                           aria-invalid={!!errors.desktopDevices || undefined}
                           placeholder="Desktop"
@@ -1814,7 +1835,7 @@ export default function DrWebLanding() {
                             setContactForm({ ...contactForm, serverDevices: v });
                           }}
                           onBlur={() =>
-                            setErrors((p) => ({ ...p, serverDevices: validators.serverDevices(contactForm.serverDevices) }))
+                            setErrors((p) => ({ ...p, serverDevices: validators.serverDevices?.(contactForm.serverDevices) ?? "" }))
                           }
                           aria-invalid={!!errors.serverDevices || undefined}
                           placeholder="Server"
@@ -1838,7 +1859,7 @@ export default function DrWebLanding() {
                             setContactForm({ ...contactForm, mobileDevices: v });
                           }}
                           onBlur={() =>
-                            setErrors((p) => ({ ...p, mobileDevices: validators.mobileDevices(contactForm.mobileDevices) }))
+                            setErrors((p) => ({ ...p, mobileDevices: validators.mobileDevices?.(contactForm.mobileDevices) ?? "" }))
                           }
                           aria-invalid={!!errors.mobileDevices || undefined}
                           placeholder="Mobile"
@@ -2037,9 +2058,11 @@ export default function DrWebLanding() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-12">
             <div className="md:col-span-2">
               <div className="flex items-center mb-6 sm:mb-8 group">
-                <img
-                  src="logo-drweb.svg"
+                <Image
+                  src="/logo-drweb.svg"
                   alt="Dr.Web Logo"
+                  width={128}
+                  height={128}
                   className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -2081,9 +2104,11 @@ export default function DrWebLanding() {
                 </div>
                 
                 <div className="text-sm text-gray-400 p-4 sm:p-6 bg-gray-800/50 rounded-lg border border-gray-600 flex flex-col items-center justify-center text-center">
-                  <img
-                    src="logo_novice_partner.svg"
+                  <Image
+                    src="/logo_novice_partner.svg"
                     alt="Novice Partner Logo"
+                    width={128}
+                    height={128}
                     className="w-32 h-32 mb-4 hover:scale-105 transition-transform duration-300"
                   />
                   <div>
