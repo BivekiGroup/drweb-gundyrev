@@ -25,7 +25,15 @@ export default function OpengraphImage() {
           textAlign: "center",
         }}
       >
-        <div style={{ maxWidth: 1000, padding: 40 }}>
+        <div
+          style={{
+            maxWidth: 1000,
+            padding: 40,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <div style={{ fontSize: 28, opacity: 0.9, marginBottom: 16 }}>
             Гундырев — партнер Dr.Web
           </div>
@@ -39,4 +47,3 @@ export default function OpengraphImage() {
     { ...size }
   );
 }
-

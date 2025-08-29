@@ -84,11 +84,11 @@ export default function DrWebLanding() {
   const { toast } = useToast();
 
   // Analytics helpers
-  const reachGoal = (name: string, params?: Record<string, any>) => {
+  const reachGoal = (name: string, params?: Record<string, unknown>) => {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Yandex.Metrica is injected globally at runtime
       if (typeof window !== "undefined" && window.ym) {
-        // @ts-ignore
+        // @ts-expect-error: Yandex.Metrica is injected globally at runtime
         window.ym(103917430, "reachGoal", name, params);
       }
     } catch {}
@@ -307,9 +307,9 @@ export default function DrWebLanding() {
         price: calculatePrice(),
       });
       try {
-        // @ts-ignore
+        // @ts-expect-error: dataLayer is a runtime-injected global by GTM
         window.dataLayer = window.dataLayer || [];
-        // @ts-ignore
+        // @ts-expect-error: dataLayer is a runtime-injected global by GTM
         window.dataLayer.push({
           event: "lead_success",
           ecommerce: {
