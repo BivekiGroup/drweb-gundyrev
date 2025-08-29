@@ -8,17 +8,66 @@ const inter = Inter({
   subsets: ["latin", "cyrillic"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+
 export const metadata: Metadata = {
-  title: "Dr.Web Антивирус - Гундырев.рф | Надежная защита от вирусов",
-  description: "Dr.Web - российский антивирус с 30-летним стажем. Централизованная защита корпоративных сетей, серверов и рабочих станций. Быстрая реакция на новые угрозы. Купить лицензию с доставкой.",
-  keywords: "Dr.Web, антивирус, защита от вирусов, корпоративная безопасность, лицензия антивируса, российский антивирус",
-  robots: "index, follow",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Dr.Web Антивирус — Гундырев.рф | Надежная защита",
+    template: "%s | Dr.Web — Гундырев.рф",
+  },
+  description:
+    "Dr.Web — российский антивирус с 30-летним стажем. Централизованная защита сетей, серверов и рабочих станций. Быстрая реакция на угрозы. Купить лицензию с доставкой.",
+  keywords:
+    [
+      "Dr.Web",
+      "антивирус",
+      "защита от вирусов",
+      "корпоративная безопасность",
+      "лицензия антивируса",
+      "российский антивирус",
+      "ФСТЭК",
+      "ФСБ",
+      "импортозамещение",
+    ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: "/",
+    languages: {
+      "ru-RU": "/",
+      "x-default": "/",
+    },
+  },
   openGraph: {
-    title: "Dr.Web Антивирус - Гундырев.рф",
-    description: "Надежная защита от вирусов и киберугроз. Dr.Web - российский антивирус с 30-летним стажем.",
+    title: "Dr.Web Антивирус — Гундырев.рф",
+    description:
+      "Надежная защита от вирусов и киберугроз. Dr.Web — российский антивирус с 30-летним стажем.",
     type: "website",
     locale: "ru_RU",
-  }
+    url: "/",
+    siteName: "Гундырев — партнер Dr.Web",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Dr.Web — партнер Гундырев",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dr.Web Антивирус — Гундырев.рф",
+    description:
+      "Российский антивирус с 30-летним опытом. Централизованная защита и быстрая реакция на угрозы.",
+    images: ["/opengraph-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export const viewport: Viewport = {
@@ -34,6 +83,26 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={`${inter.className} antialiased`}>
+        {/* Organization + WebSite JSON-LD */}
+        <Script id="ld-json-org" type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Гундырев — партнер Dr.Web",
+            url: siteUrl,
+            logo: `${siteUrl}/logo-drweb.svg`,
+            sameAs: [
+              // Add socials when available
+            ],
+            contactPoint: [{
+              "@type": "ContactPoint",
+              telephone: "+7-993-077-0168",
+              contactType: "sales",
+              areaServed: "RU",
+              availableLanguage: ["Russian"],
+            }],
+          })}
+        </Script>
         {/* Yandex.Metrika */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`

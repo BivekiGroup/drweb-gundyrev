@@ -1,5 +1,19 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, Shield, Lock, Eye, Database, Users } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Политика конфиденциальности',
+  description: 'Политика конфиденциальности сайта Гундырев.рф — партнера Dr.Web. Описание обработки персональных данных и контактная информация.',
+  alternates: { canonical: '/privacy' },
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Политика конфиденциальности — Гундырев.рф',
+    description: 'Информация о сборе, хранении и обработке персональных данных на сайте партнера Dr.Web.',
+    type: 'article',
+    url: '/privacy',
+  },
+};
 
 export default function PrivacyPolicy() {
   return (

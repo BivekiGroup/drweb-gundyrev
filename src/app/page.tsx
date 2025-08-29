@@ -83,6 +83,17 @@ export default function DrWebLanding() {
   const [visibleElements, setVisibleElements] = useState(new Set());
   const { toast } = useToast();
 
+  // Analytics helpers
+  const reachGoal = (name: string, params?: Record<string, any>) => {
+    try {
+      // @ts-ignore
+      if (typeof window !== "undefined" && window.ym) {
+        // @ts-ignore
+        window.ym(103917430, "reachGoal", name, params);
+      }
+    } catch {}
+  };
+
   // Phone mask + helpers
   const formatRuPhone = (value: string) => {
     const digits = value.replace(/\D/g, "");
@@ -288,6 +299,32 @@ export default function DrWebLanding() {
         }),
       });
       if (!res.ok) throw new Error("fail");
+      // Analytics: lead success
+      reachGoal("lead_success", {
+        planKey: calculatorData.plan,
+        devices: calculatorData.devices,
+        months: calculatorData.months,
+        price: calculatePrice(),
+      });
+      try {
+        // @ts-ignore
+        window.dataLayer = window.dataLayer || [];
+        // @ts-ignore
+        window.dataLayer.push({
+          event: "lead_success",
+          ecommerce: {
+            currency: "RUB",
+            items: [
+              {
+                item_name: plan?.name,
+                item_id: String(calculatorData.plan),
+                price: calculatePrice(),
+                quantity: 1,
+              },
+            ],
+          },
+        });
+      } catch {}
       toast({
         title: "Заявка отправлена",
         description: "Мы свяжемся с вами в ближайшее время",
@@ -307,6 +344,7 @@ export default function DrWebLanding() {
       });
       setErrors({});
     } catch {
+      reachGoal("lead_error");
       toast({
         title: "Ошибка отправки",
         description: "Попробуйте позже или позвоните нам",
@@ -390,7 +428,10 @@ export default function DrWebLanding() {
               </nav>
               <Button
                 className="bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 hover:from-green-700 hover:via-green-800 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 ease-smooth transform hover:-translate-y-1 hover:scale-102 text-sm xl:text-base"
-                onClick={() => window.open("tel:+79930770168", "_self")}
+                onClick={() => {
+                  reachGoal("call_click", { place: "desktop_header" });
+                  window.open("tel:+79930770168", "_self");
+                }}
               >
                 <Phone className="w-3 h-3 xl:w-4 xl:h-4 mr-1 xl:mr-2" />
                 <span className="hidden xl:inline">+7 993 077-01-68</span>
@@ -402,7 +443,10 @@ export default function DrWebLanding() {
             <div className="hidden md:flex lg:hidden items-center space-x-4">
               <Button
                 className="bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 text-white shadow-lg text-sm"
-                onClick={() => window.open("tel:+79930770168", "_self")}
+                onClick={() => {
+                  reachGoal("call_click", { place: "tablet_header" });
+                  window.open("tel:+79930770168", "_self");
+                }}
               >
                 <Phone className="w-3 h-3 mr-1" />
                 Звонок
@@ -453,7 +497,10 @@ export default function DrWebLanding() {
                 </a>
                 <Button
                   className="w-full mt-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white"
-                  onClick={() => window.open("tel:+79930770168", "_self")}
+                  onClick={() => {
+                    reachGoal("call_click", { place: "mobile_menu" });
+                    window.open("tel:+79930770168", "_self");
+                  }}
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   +7 993 077-01-68
@@ -533,11 +580,16 @@ export default function DrWebLanding() {
               >
                 <Button
                   size="lg"
-                  onClick={() =>
+                  onClick={() => {
+                    reachGoal("calculator_cta_click", {
+                      plan: calculatorData.plan,
+                      devices: calculatorData.devices,
+                      months: calculatorData.months,
+                    });
                     document
                       .getElementById("calculator")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
                   className="group bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 hover:from-green-700 hover:via-green-800 hover:to-emerald-700 text-white shadow-2xl hover:shadow-green-lg transition-all duration-400 ease-smooth transform hover:-translate-y-2 hover:scale-102 text-sm sm:text-base"
                 >
                   <Calculator className="w-5 h-5 mr-3" />
@@ -548,11 +600,12 @@ export default function DrWebLanding() {
                 <Button
                   size="lg"
                   variant="outline"
-                  onClick={() =>
+                  onClick={() => {
+                    reachGoal("consult_cta_click", { place: "hero" });
                     document
                       .getElementById("contacts")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }}
                   className="group border-2 sm:border-3 border-green-600 text-green-600 hover:bg-green-600 hover:text-white shadow-xl hover:shadow-2xl transition-all duration-400 ease-smooth transform hover:-translate-y-2 hover:scale-102 text-sm sm:text-base"
                 >
                   <Headphones className="w-6 h-6 mr-3" />
@@ -837,11 +890,12 @@ export default function DrWebLanding() {
                     <Button
                       className="w-full"
                       variant="outline"
-                      onClick={() =>
+                      onClick={() => {
+                        reachGoal("solution_cta_click", { title: solution.title });
                         document
                           .getElementById("contacts")
-                          ?.scrollIntoView({ behavior: "smooth" })
-                      }
+                          ?.scrollIntoView({ behavior: "smooth" });
+                      }}
                     >
                       Заказать консультацию
                     </Button>

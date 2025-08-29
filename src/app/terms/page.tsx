@@ -1,5 +1,19 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, FileText, CheckCircle, AlertTriangle, Shield, Users } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Пользовательское соглашение',
+  description: 'Условия использования сайта Гундырев.рф — партнера Dr.Web. Правила, ответственность и контактная информация.',
+  alternates: { canonical: '/terms' },
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Пользовательское соглашение — Гундырев.рф',
+    description: 'Правовая информация и условия использования сервиса и консультаций по продуктам Dr.Web.',
+    type: 'article',
+    url: '/terms',
+  },
+};
 
 export default function TermsOfService() {
   return (
