@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import InquiryModal from "@/components/InquiryModal";
 import { ToastProvider } from "@/components/ui/toast";
 
 const inter = Inter({
@@ -83,6 +84,8 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={`${inter.className} antialiased`}>
+        {/* Jivo Chat */}
+        <Script src="//code.jivo.ru/widget/N3LCdNFl5u" strategy="beforeInteractive" />
         {/* Organization + WebSite JSON-LD */}
         <Script id="ld-json-org" type="application/ld+json" strategy="afterInteractive">
           {JSON.stringify({
@@ -124,6 +127,8 @@ export default function RootLayout({
         </noscript>
         <ToastProvider>
           {children}
+          {/* Delayed inquiry modal */}
+          <InquiryModal />
         </ToastProvider>
       </body>
     </html>

@@ -1,74 +1,52 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from 'next/server'
 
-// Note: For production, move these to env vars
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8292170550:AAGzWOoGRYzQX0E4sx3_6lbv7f_r0Ez3gRQ";
-const CHAT_ID = process.env.TELEGRAM_CHAT_ID || "-1002730492752";
+function formatMessage({ name, contact, message, page }: { name?: string; contact: string; message?: string; page?: string }) {
+  const lines = [
+    '🟢 Новый запрос с сайта drweb.gundyrev.com',
+    name ? `👤 Имя: ${name}` : undefined,
+    `📞 Контакт: ${contact}`,
+    message ? `💬 Вопрос: ${message}` : undefined,
+    page ? `🔗 Страница: ${page}` : undefined,
+    `⏱ Время: ${new Date().toLocaleString('ru-RU')}`,
+  ].filter(Boolean)
+  return lines.join('\n')
+}
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const data = await req.json();
+    const { name, contact, message, page } = await req.json().catch(() => ({}))
 
-    const {
-      name,
-      phone,
-      email,
-      company,
-      position,
-      orgType,
-      desktopDevices,
-      serverDevices,
-      mobileDevices,
-      message,
-      calculator,
-    } = data || {};
-
-    const orgTypeMap: Record<string, string> = {
-      corporate: "Бизнес",
-      government: "Госорган",
-      "non-profit": "НКО",
-    };
-
-    const calcText = calculator
-      ? `\n\nКалькулятор: ${calculator?.planName || "—"}\nУзлов: ${calculator?.devices || "—"}\nСрок: ${calculator?.months || "—"} мес.`
-      : "";
-
-    const text = [
-      "Новая заявка с сайта",
-      "",
-      `Имя: ${name || "—"}`,
-      `Телефон: ${phone || "—"}`,
-      `Email: ${email || "—"}`,
-      `Компания: ${company || "—"}`,
-      `Должность: ${position || "—"}`,
-      `Тип организации: ${orgTypeMap[orgType] || orgType || "—"}`,
-      `Рабочие станции: ${desktopDevices || "—"}`,
-      `Серверы: ${serverDevices || "—"}`,
-      `Мобильные устройства: ${mobileDevices || "—"}`,
-      "",
-      `Сообщение: ${message || "—"}`,
-    ].join("\n") + calcText;
-
-    const resp = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text,
-        parse_mode: "HTML",
-        disable_web_page_preview: true,
-      }),
-    });
-
-    if (!resp.ok) {
-      const err = await resp.text();
-      console.error("Telegram error:", err);
-      return NextResponse.json({ ok: false, error: "telegram_failed" }, { status: 502 });
+    if (!contact || typeof contact !== 'string' || contact.trim().length < 3) {
+      return new Response(JSON.stringify({ error: 'Укажите корректный контакт (Telegram или телефон).' }), { status: 400 })
     }
 
-    return NextResponse.json({ ok: true });
+    const token = process.env.TELEGRAM_BOT_TOKEN
+    const chatId = process.env.TELEGRAM_CHAT_ID
+    if (!token || !chatId) {
+      return new Response(JSON.stringify({ error: 'Сервис временно недоступен (нет конфигурации).' }), { status: 503 })
+    }
+
+    const text = formatMessage({ name, contact, message, page })
+    const url = `https://api.telegram.org/bot${token}/sendMessage`
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', disable_web_page_preview: true }),
+      // Enforce server-side fetch
+      cache: 'no-store',
+    })
+
+    if (!res.ok) {
+      const payload = await res.json().catch(() => ({}))
+      console.error('Telegram API error', res.status, payload)
+      return new Response(JSON.stringify({ error: 'Не удалось отправить сообщение. Попробуйте позже.' }), { status: 502 })
+    }
+
+    return new Response(JSON.stringify({ ok: true }), { status: 200 })
   } catch (e) {
-    console.error("API error:", e);
-    return NextResponse.json({ ok: false }, { status: 400 });
+    console.error('Telegram route error', e)
+    return new Response(JSON.stringify({ error: 'Внутренняя ошибка' }), { status: 500 })
   }
 }
 
