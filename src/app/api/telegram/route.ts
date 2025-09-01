@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } from '@/config/integrations'
 
 function formatMessage({ name, contact, message, page }: { name?: string; contact: string; message?: string; page?: string }) {
   const lines = [
@@ -20,8 +21,8 @@ export async function POST(req: NextRequest) {
       return new Response(JSON.stringify({ error: 'Укажите корректный контакт (Telegram или телефон).' }), { status: 400 })
     }
 
-    const token = process.env.TELEGRAM_BOT_TOKEN
-    const chatId = process.env.TELEGRAM_CHAT_ID
+    const token = TELEGRAM_BOT_TOKEN
+    const chatId = TELEGRAM_CHAT_ID
     if (!token || !chatId) {
       return new Response(JSON.stringify({ error: 'Сервис временно недоступен (нет конфигурации).' }), { status: 503 })
     }
@@ -49,4 +50,3 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify({ error: 'Внутренняя ошибка' }), { status: 500 })
   }
 }
-
