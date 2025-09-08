@@ -4,9 +4,7 @@ import {
   ArrowRight,
   Award,
   Building,
-  Calculator,
   CheckCircle,
-  ChevronDown,
   Clock,
   Code,
   Cpu,
@@ -16,7 +14,6 @@ import {
   Mail,
   Menu,
   Monitor,
-  MousePointer,
   Phone,
   Rocket,
   Server,
@@ -24,7 +21,6 @@ import {
   ShieldCheck,
   Smartphone,
   Star,
-  Target,
   TrendingUp,
   Users,
   X,
@@ -46,11 +42,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function DrWebLanding() {
-  const [calculatorData, setCalculatorData] = useState({
-    devices: 10,
-    plan: "enterprise",
-    months: 12,
-  });
+  
 
   type ContactForm = {
     name: string;
@@ -180,46 +172,7 @@ export default function DrWebLanding() {
     return () => observer.disconnect();
   }, []);
 
-  const plans = {
-    enterprise: {
-      name: "Dr.Web Enterprise Security Suite",
-      basePrice: 1200,
-      description: "Комплексная корпоративная защита",
-      unit: "за узел сети",
-    },
-    desktop: {
-      name: "Dr.Web Desktop Security Suite",
-      basePrice: 850,
-      description: "Защита рабочих станций",
-      unit: "за рабочую станцию",
-    },
-    server: {
-      name: "Dr.Web Server Security Suite",
-      basePrice: 2500,
-      description: "Защита серверов",
-      unit: "за сервер",
-    },
-    mail: {
-      name: "Dr.Web Mail Security Suite",
-      basePrice: 950,
-      description: "Защита почтовых серверов",
-      unit: "за почтового пользователя",
-    },
-    mobile: {
-      name: "Dr.Web Mobile Security Suite",
-      basePrice: 650,
-      description: "Защита мобильных устройств",
-      unit: "за мобильное устройство",
-    },
-  };
-
-  const additionalOptions = {
-    masterDownloader: {
-      name: 'Право использования программы для ЭВМ "Мастер скачиваний" с расширенным функционалом',
-      price: 1200,
-      description: "Дополнительный функционал для загрузки файлов",
-    },
-  };
+  
 
   const testimonials = [
     {
@@ -238,7 +191,7 @@ export default function DrWebLanding() {
     {
       name: "Дмитрий Сидоров",
       company: 'СПБ ГБУЗ "ГОРОДСКАЯ ПОЛИКЛИНИКА № 93"',
-      text: "Централизованное управление Dr.Web Enterprise Suite упростило администрирование 15,000 рабочих мест. Отличная техподдержка.",
+      text: "Централизованное управление упростило администрирование 15,000 рабочих мест. Отличная техподдержка.",
       rating: 5,
     },
     {
@@ -261,15 +214,7 @@ export default function DrWebLanding() {
     }
   ];
 
-  const calculatePrice = () => {
-    const plan = plans[calculatorData.plan as keyof typeof plans];
-    const basePrice = plan.basePrice * calculatorData.devices * calculatorData.months;
 
-    // Всегда добавляем "Мастер скачиваний"
-    const masterDownloaderPrice = additionalOptions.masterDownloader.price;
-
-    return Math.round(basePrice + masterDownloaderPrice);
-  };
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -282,49 +227,19 @@ export default function DrWebLanding() {
       return;
     }
     try {
-      const plan = plans[calculatorData.plan as keyof typeof plans];
       const res = await fetch("/api/telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...contactForm,
-          phone: sanitizePhone(contactForm.phone),
-          calculator: {
-            planKey: calculatorData.plan,
-            planName: plan?.name,
-            devices: calculatorData.devices,
-            months: calculatorData.months,
-            estimatedPrice: calculatePrice(),
-          },
+          name: contactForm.name,
+          contact: sanitizePhone(contactForm.phone) || contactForm.phone.trim(),
+          message: contactForm.message,
+          page: typeof window !== "undefined" ? window.location.href : undefined,
         }),
       });
       if (!res.ok) throw new Error("fail");
       // Analytics: lead success
-      reachGoal("lead_success", {
-        planKey: calculatorData.plan,
-        devices: calculatorData.devices,
-        months: calculatorData.months,
-        price: calculatePrice(),
-      });
-      try {
-        // @ts-expect-error: dataLayer is a runtime-injected global by GTM
-        window.dataLayer = window.dataLayer || [];
-        // @ts-expect-error: dataLayer is a runtime-injected global by GTM
-        window.dataLayer.push({
-          event: "lead_success",
-          ecommerce: {
-            currency: "RUB",
-            items: [
-              {
-                item_name: plan?.name,
-                item_id: String(calculatorData.plan),
-                price: calculatePrice(),
-                quantity: 1,
-              },
-            ],
-          },
-        });
-      } catch {}
+      reachGoal("lead_success");
       toast({
         title: "Заявка отправлена",
         description: "Мы свяжемся с вами в ближайшее время",
@@ -392,9 +307,14 @@ export default function DrWebLanding() {
               </div>
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs sm:text-sm text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded">
-                    Партнер Dr.Web
-                  </span>
+                  <a
+                    href="https://гундырев.рф"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs sm:text-sm text-green-600 font-bold bg-green-50 px-2 py-0.5 rounded hover:bg-green-100 transition-colors"
+                  >
+                    Гундырев.рф
+                  </a>
                 </div>
               </div>
             </div>
@@ -406,12 +326,6 @@ export default function DrWebLanding() {
                   className="text-sm font-medium transition-colors hover:text-primary"
                 >
                   Решения
-                </a>
-                <a
-                  href="#calculator"
-                  className="text-sm font-medium transition-colors hover:text-primary"
-                >
-                  Калькулятор
                 </a>
                 <a
                   href="#services-header"
@@ -478,12 +392,6 @@ export default function DrWebLanding() {
                   Решения
                 </a>
                 <a
-                  href="#calculator"
-                  className="block text-sm sm:text-base font-medium py-2 hover:text-primary transition-colors"
-                >
-                  Калькулятор
-                </a>
-                <a
                   href="#services-header"
                   className="block text-sm sm:text-base font-medium py-2 hover:text-primary transition-colors"
                 >
@@ -514,208 +422,92 @@ export default function DrWebLanding() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center bg-gradient-to-br from-green-50 via-background to-blue-50 overflow-hidden">
         {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-          <div className="absolute top-0 left-0 w-full h-full">
-            <div className="floating-shapes">
-              <div className="shape shape-1"></div>
-              <div className="shape shape-2"></div>
-              <div className="shape shape-3"></div>
-            </div>
-          </div>
+        <div className="hero-bg">
+          <div className="hero-grid"></div>
+          <div className="hero-lines parallax-lines"></div>
+          <div className="hero-orb orb-1"></div>
+          <div className="hero-orb orb-2"></div>
+          <div className="hero-orb orb-3"></div>
         </div>
 
-        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
-          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 xl:gap-20 items-center">
-            <div className="text-center lg:text-left">
-
-
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-foreground mb-4 sm:mb-6 md:mb-8 leading-tight text-center lg:text-left">
-                <span className="block animate-slide-in-left">
-                  Антивирус для
-                </span>
-                <span
-                  className="block bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent animate-slide-in-left"
-                  style={{ animationDelay: "0.2s" }}
-                >
-                  госучреждений
-                </span>
-                <span
-                  className="block text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold mt-2 sm:mt-3 md:mt-4 animate-slide-in-left"
-                  style={{ animationDelay: "0.4s" }}
-                >
-                  <span className="text-green-600">и корпораций</span>
-                </span>
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-14 sm:py-16 md:py-20 lg:py-24 xl:py-28">
+          <div className="max-w-6xl mx-auto text-center">
+            
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight mb-6">
+              Киберзащита для
+              <span className="block bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 bg-clip-text text-transparent">госучреждений и бизнеса</span>
               </h1>
-
-              <p
-                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl text-muted-foreground mb-6 sm:mb-8 md:mb-10 lg:mb-12 max-w-2xl leading-relaxed animate-fade-in-up text-center lg:text-left mx-auto lg:mx-0"
-                style={{ animationDelay: "0.6s" }}
-              >
-                <span className="text-green-600 font-bold text-lg sm:text-xl lg:text-2xl">
-                  Dr.Web экономит бюджет
-                </span>{" "}
-                — российское решение с 30-летним опытом. Централизованное
-                управление, лицензирование по узлам, соответствие требованиям
-                безопасности РФ.
-                <span className="block mt-2 sm:mt-3 text-sm sm:text-base lg:text-lg">
-                  <span className="bg-yellow-100 text-yellow-800 px-2 sm:px-3 py-1 rounded-full font-semibold text-xs sm:text-sm">
-                    ✓ ФСТЭК
-                  </span>
-                  <span className="bg-blue-100 text-blue-800 px-2 sm:px-3 py-1 rounded-full font-semibold ml-1 sm:ml-2 text-xs sm:text-sm">
-                    ✓ ФСБ
-                  </span>
-                  <span className="bg-green-100 text-green-800 px-2 sm:px-3 py-1 rounded-full font-semibold ml-1 sm:ml-2 text-xs sm:text-sm">
-                    ✓ Импортозамещение
-                  </span>
-                  <span className="bg-purple-100 text-purple-800 px-2 sm:px-3 py-1 rounded-full font-semibold ml-1 sm:ml-2 text-xs sm:text-sm">
-                    ✓ РРПО
-                  </span>
-                </span>
-              </p>
-
-              <div
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 animate-scale-in justify-center lg:justify-start"
-                style={{ animationDelay: "0.8s" }}
-              >
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+              Быстрее, легче и дешевле конкурентов. Всё по делу — за минуту вы поймёте, что нужно.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10">
                 <Button
                   size="lg"
+                className="w-full sm:w-auto bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 hover:from-green-700 hover:via-green-800 hover:to-emerald-700 text-white shadow-2xl hover:shadow-green-lg transition-all duration-400 ease-smooth transform hover:-translate-y-1 hover:scale-[1.02]"
                   onClick={() => {
-                    reachGoal("calculator_cta_click", {
-                      plan: calculatorData.plan,
-                      devices: calculatorData.devices,
-                      months: calculatorData.months,
-                    });
-                    document
-                      .getElementById("calculator")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="group bg-gradient-to-r from-green-600 via-green-700 to-emerald-600 hover:from-green-700 hover:via-green-800 hover:to-emerald-700 text-white shadow-2xl hover:shadow-green-lg transition-all duration-400 ease-smooth transform hover:-translate-y-2 hover:scale-102 text-sm sm:text-base"
-                >
-                  <Calculator className="w-5 h-5 mr-3" />
-                  <span className="hidden sm:inline">Рассчитать стоимость</span>
-                  <span className="sm:hidden">Калькулятор</span>
-                  <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform duration-300" />
+                  reachGoal('consult_cta_click', { place: 'hero_primary' });
+                  document.getElementById('contacts')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                <Headphones className="w-6 h-6 mr-3" />
+                Бесплатная консультация
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
+                className="w-full sm:w-auto border-2 border-green-600 text-green-700 hover:bg-green-600 hover:text-white shadow-xl transition-all duration-400 ease-smooth"
                   onClick={() => {
-                    reachGoal("consult_cta_click", { place: "hero" });
-                    document
-                      .getElementById("contacts")
-                      ?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="group border-2 sm:border-3 border-green-600 text-green-600 hover:bg-green-600 hover:text-white shadow-xl hover:shadow-2xl transition-all duration-400 ease-smooth transform hover:-translate-y-2 hover:scale-102 text-sm sm:text-base"
-                >
-                  <Headphones className="w-6 h-6 mr-3" />
-                  Бесплатная консультация
+                  reachGoal('solution_cta_click', { place: 'hero_secondary' });
+                  document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                <ShieldCheck className="w-6 h-6 mr-3" />
+                Каталог решений
                 </Button>
               </div>
 
-              {/* Live Stats */}
-              <div
-                className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 animate-fade-in-up max-w-4xl mx-auto lg:mx-0"
-                style={{ animationDelay: "1s" }}
-              >
-                {[
-                  {
-                    number: "30+",
-                    text: "лет опыта на рынке",
-                    icon: Award,
-                    color: "from-yellow-500 to-orange-500",
-                  },
-                  {
-                    number: "500M+",
-                    text: "защищенных устройств",
-                    icon: Shield,
-                    color: "from-green-500 to-emerald-500",
-                  },
-                  {
-                    number: "24/7",
-                    text: "техподдержка",
-                    icon: Headphones,
-                    color: "from-blue-500 to-purple-500",
-                  },
-                  {
-                    number: "99.9%",
-                    text: "обнаружение угроз",
-                    icon: Target,
-                    color: "from-red-500 to-pink-500",
-                  },
-                ].map((stat, index) => (
-                  <Card
-                    key={index}
-                    className="group text-center border-0 bg-background/80 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3"
-                  >
-                    <CardContent className="p-3 sm:p-4 md:p-6">
-                      <div
-                                          className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-125 transition-transform duration-300`}
-                >
-                  <stat.icon className="w-6 h-6 text-white" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto">
+              {[
+                { number: 'Соответствие', text: 'нормам кибербезопасности РФ', icon: ShieldCheck, color: 'from-green-500 to-emerald-600' },
+                { number: '30+', text: 'лет на рынке', icon: Award, color: 'from-yellow-500 to-orange-500' },
+                { number: '44/223‑ФЗ', text: 'поставка', icon: Building, color: 'from-blue-500 to-indigo-500' },
+                { number: 'Партнёр', text: 'Dr.Web', icon: Star, color: 'from-purple-500 to-pink-500' },
+              ].map((stat, idx) => (
+                <Card key={idx} className="text-center border-0 bg-background/80 backdrop-blur-sm shadow-lg">
+                  <CardContent className="p-4">
+                    <div className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-2`}>
+                      <stat.icon className="w-5 h-5 text-white" />
                       </div>
-                      <div className="text-lg sm:text-xl md:text-2xl font-black text-foreground mb-1">
-                        {stat.number}
-                      </div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">
-                        {stat.text}
-                      </div>
+                    <div className="text-xl font-black text-foreground">{stat.number}</div>
+                    <div className="text-xs text-muted-foreground">{stat.text}</div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             </div>
+        </div>
+      </section>
 
-            {/* Hero Visual */}
-            <div className="relative lg:block hidden">
-              <Card className="relative w-full transform hover:scale-105 transition-transform duration-500 shadow-2xl border-0 bg-background/90 backdrop-blur-sm">
-                <CardContent className="p-8">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold text-foreground mb-6">
-                      Защита активна
-                    </h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">
-                          Сканирование:
-                        </span>
-                        <Badge
-                          variant="secondary"
-                          className="bg-green-100 text-green-700"
-                        >
-                          Активно
-                        </Badge>
+      {/* SEO Content Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl md:text-3xl font-black text-foreground mb-6">Антивирус Dr.Web для госучреждений и образования</h2>
+          <div className="grid md:grid-cols-2 gap-8 text-sm text-muted-foreground leading-relaxed">
+            <div>
+              <h3 className="font-bold text-foreground mb-2">Доктор Веб для госучреждений</h3>
+              <p>Соответствие требованиям ФСТЭК и ФСБ, поставка по 44‑ФЗ и 223‑ФЗ, централизованное управление и лицензирование по узлам. Подходит для ведомств, муниципалитетов и ГУПов.</p>
                       </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Угрозы:</span>
-                        <Badge
-                          variant="secondary"
-                          className="bg-green-100 text-green-700"
-                        >
-                          0 найдено
-                        </Badge>
+            <div>
+              <h3 className="font-bold text-foreground mb-2">Доктор Веб для школы</h3>
+              <p>Комплект для образовательных учреждений: защита рабочих станций учителей и серверов, фильтрация почты и лёгкое администрирование. Подходит для школ, колледжей и вузов.</p>
                       </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">
-                          Обновления:
-                        </span>
-                        <Badge
-                          variant="secondary"
-                          className="bg-green-100 text-green-700"
-                        >
-                          Актуальны
-                        </Badge>
+            <div>
+              <h3 className="font-bold text-foreground mb-2">Антивирус для школы</h3>
+              <p>Лицензирование по количеству узлов, поддержка Windows, Linux и macOS, техническая поддержка на русском 24/7. Возможно развертывание в изолированных сетях (air‑gapped).</p>
                       </div>
-                    </div>
-                    <div className="mt-6 w-full bg-secondary rounded-full h-2">
-                      <div
-                        className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full animate-progress"
-                        style={{ width: "100%" }}
-                      ></div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <div>
+              <h3 className="font-bold text-foreground mb-2">Для малого бизнеса</h3>
+              <p>Готовый комплект «рабочие станции + почта + управление». Быстрый старт за 3 дня и экономия ТСО благодаря единому Центру управления.</p>
             </div>
           </div>
         </div>
@@ -742,40 +534,32 @@ export default function DrWebLanding() {
                 идеальную защиту
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Полная линейка продуктов Dr.Web для любых задач - от домашнего
-              компьютера до корпоративной сети
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Коротко о ключевых продуктах. Никакой воды — только выгоды.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-6">
             {[
               {
                 icon: Building,
-                title: "Dr.Web Enterprise Security Suite",
+                title: "Комплект для школы",
                 description:
-                  "Линейка программных продуктов, включающая защиту всех конечных устройств корпоративной сети, проверку почтового и интернет-трафиков, а также единый Центр управления",
-                features: [
-                  "Сертифицирован ФСТЭК России",
-                  "Все продукты в одной лицензии",
-                  "Поддержка Windows, Linux, macOS, Android",
-                  "Единый Центр управления",
-                ],
-                price: "от 6500₽",
+                  "Защита компьютеров и серверов, фильтрация почты, простой контроль",
+                features: ["ФСТЭК", "Центр управления"],
+                price: "спец. цена",
                 color: "from-green-500 to-emerald-600",
                 popular: true,
-                nodeType: "за узел сети",
+                nodeType: "для образовательных учреждений",
               },
               {
                 icon: Monitor,
                 title: "Dr.Web Desktop Security Suite",
                 description:
-                  "Защита рабочих станций, в том числе в среде виртуализации, клиентов терминальных и виртуальных серверов, клиентов встроенных систем",
+                  "Защита рабочих станций, в т.ч. виртуальных и терминальных клиентов",
                 features: [
-                  "Сертифицирован ФСТЭК России",
-                  "В Реестре отечественного ПО",
-                  "Поддержка Windows, Linux, macOS",
-                  "Включает Центр управления",
+                  "ФСТЭК",
+                  "Центр управления",
                 ],
                 price: "от 1900₽",
                 color: "from-blue-500 to-blue-600",
@@ -786,12 +570,10 @@ export default function DrWebLanding() {
                 icon: Server,
                 title: "Dr.Web Server Security Suite",
                 description:
-                  "Защита файловых серверов и серверов приложений, в том числе терминальных и виртуальных",
+                  "Защита файловых и приложенческих серверов, в т.ч. виртуальных",
                 features: [
-                  "Сертифицирован ФСТЭК России",
-                  "В Реестре отечественного ПО",
-                  "Поддержка Windows, Unix, macOS",
-                  "Включает Центр управления",
+                  "ФСТЭК",
+                  "Центр управления",
                 ],
                 price: "от 4990₽",
                 color: "from-purple-500 to-purple-600",
@@ -799,15 +581,24 @@ export default function DrWebLanding() {
                 nodeType: "за сервер",
               },
               {
+                icon: Building,
+                title: "Комплект для малого бизнеса",
+                description:
+                  "Быстрый старт: рабочие станции + почта + управление",
+                features: ["Экономия", "Простой запуск"],
+                price: "спец. цена",
+                color: "from-teal-500 to-cyan-600",
+                popular: false,
+                nodeType: "до 100 устройств",
+              },
+              {
                 icon: Mail,
                 title: "Dr.Web Mail Security Suite",
                 description:
-                  "Проверка почтового трафика для Unix и Microsoft Exchange Server",
+                  "Проверка почтового трафика (Unix, MS Exchange) + антиспам",
                 features: [
-                  "Сертифицирован ФСТЭК России",
-                  "В Реестре отечественного ПО",
-                  "Дополнительный компонент Антиспам",
-                  "Включает Центр управления",
+                  "ФСТЭК",
+                  "Антиспам",
                 ],
                 price: "от 7260₽",
                 color: "from-orange-500 to-red-500",
@@ -818,12 +609,10 @@ export default function DrWebLanding() {
                 icon: Smartphone,
                 title: "Dr.Web Mobile Security Suite",
                 description:
-                  "Защита мобильных устройств и планшетов под управлением Android и Аврора",
+                  "Защита Android и Аврора‑устройств с централизованным управлением",
                 features: [
-                  "Сертифицирован ФСТЭК России (Аврора)",
-                  "В Реестре отечественного ПО",
-                  "Поддержка Android и Аврора",
-                  "Включает Центр управления",
+                  "ФСТЭК",
+                  "Android/Аврора",
                 ],
                 price: "от 2500₽",
                 color: "from-cyan-500 to-blue-600",
@@ -1050,287 +839,7 @@ export default function DrWebLanding() {
       </section>
 
 
-      {/* Calculator Section */}
-      <section id="calculator" className="py-12 sm:py-16 lg:py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className="text-center mb-8 sm:mb-12 lg:mb-16"
-            data-animate
-            id="calculator-header"
-          >
-
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-foreground mb-4 sm:mb-6">
-              Рассчитайте стоимость{" "}
-              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                за 30 секунд
-              </span>
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-              Точный расчет с учетом скидок и специальных предложений
-            </p>
-          </div>
-
-          <Card
-            className={`border-0 shadow-2xl overflow-hidden bg-white ${
-              visibleElements.has("calculator-header")
-                ? "animate-scale-in"
-                : "opacity-0"
-            }`}
-          >
-            <div className="p-4 sm:p-6 lg:p-8 xl:p-12">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 xl:gap-12">
-                <div className="space-y-6 sm:space-y-8">
-                  <div>
-                    <label className="block text-sm font-bold text-foreground mb-4 flex items-center">
-                      <Target className="w-5 h-5 mr-2 text-green-600" />
-                      Выберите решение
-                    </label>
-                    <div className="relative">
-                      <select
-                        value={calculatorData.plan}
-                        onChange={(e) =>
-                          setCalculatorData({
-                            ...calculatorData,
-                            plan: e.target.value,
-                          })
-                        }
-                        className="w-full p-5 border-2 border-input rounded-2xl focus:ring-4 focus:ring-green-500/30 focus:border-green-500 appearance-none bg-background text-foreground font-semibold shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer"
-                      >
-                        {Object.entries(plans).map(([key, plan]) => (
-                          <option key={key} value={key}>
-                            {plan.name}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown className="absolute right-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-muted-foreground pointer-events-none" />
-                    </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {
-                        plans[calculatorData.plan as keyof typeof plans]
-                          .description
-                      }
-                    </p>
-                    <p className="mt-1 text-xs text-green-600 font-semibold">
-                      Лицензирование:{" "}
-                      {plans[calculatorData.plan as keyof typeof plans].unit}
-                    </p>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-foreground mb-4 flex items-center justify-between">
-                      <span className="flex items-center">
-                        <Monitor className="w-5 h-5 mr-2 text-green-600" />
-                        Количество лицензий
-                      </span>
-                      <Badge
-                        variant="secondary"
-                        className="text-2xl font-black text-green-600 bg-green-100"
-                      >
-                        {calculatorData.devices}
-                      </Badge>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="range"
-                        min="1"
-                        max="500"
-                        value={calculatorData.devices}
-                        onChange={(e) =>
-                          setCalculatorData({
-                            ...calculatorData,
-                            devices: parseInt(e.target.value),
-                          })
-                        }
-                        className="w-full h-4 bg-secondary rounded-lg appearance-none cursor-pointer slider-dynamic transition-all duration-400 ease-smooth"
-                        style={{
-                          background: `linear-gradient(to right, #16a34a 0%, #16a34a ${
-                            (calculatorData.devices / 500) * 100
-                          }%, #e5e7eb ${
-                            (calculatorData.devices / 500) * 100
-                          }%, #e5e7eb 100%)`,
-                        }}
-                      />
-                      <div className="flex justify-between text-sm text-muted-foreground mt-3">
-                        <span className="flex items-center">
-                          <MousePointer className="w-3 h-3 mr-1" /> 1
-                        </span>
-                        <span>500</span>
-                      </div>
-                    </div>
-                    <div className="mt-3 text-sm text-green-600 font-semibold">
-                      <p>
-                        Лицензирование:{" "}
-                        {plans[calculatorData.plan as keyof typeof plans].unit}
-                      </p>
-                      <div className="mt-2 text-xs text-muted-foreground">
-                        <p>• По числу защищаемых рабочих станций</p>
-                        <p>• По числу клиентов терминального сервера</p>
-                        <p>• По числу клиентов виртуального сервера</p>
-                        <p>• По числу клиентов встроенных систем</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-foreground mb-4 flex items-center">
-                      <Clock className="w-5 h-5 mr-2 text-green-600" />
-                      Срок лицензии
-                    </label>
-                    <div className="grid grid-cols-3 gap-4">
-                      {[
-                        {
-                          value: 12,
-                          label: "1 год",
-                          discount: null,
-                          popular: false,
-                        },
-                        {
-                          value: 24,
-                          label: "2 года",
-                          discount: "25%",
-                          popular: true,
-                        },
-                        {
-                          value: 36,
-                          label: "3 года",
-                          discount: "30%",
-                          popular: false,
-                        },
-                      ].map((option) => (
-                        <div key={option.value} className="relative">
-                          {option.popular && (
-                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                              <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-xs px-3 py-1 whitespace-nowrap">
-                                Популярно
-                              </Badge>
-                            </div>
-                          )}
-                          <Button
-                            variant={
-                              calculatorData.months === option.value
-                                ? "default"
-                                : "outline"
-                            }
-                            onClick={() =>
-                              setCalculatorData({
-                                ...calculatorData,
-                                months: option.value,
-                              })
-                            }
-                            className={`w-full p-5 text-center rounded-2xl border-2 transition-all duration-300 h-auto flex-col ${
-                              calculatorData.months === option.value
-                                ? "shadow-lg transform scale-105"
-                                : "hover:shadow-md"
-                            } ${option.popular ? "mt-3" : ""}`}
-                          >
-                            <div className="font-bold text-lg">
-                              {option.label}
-                            </div>
-                            {option.discount && (
-                              <div className="text-xs text-green-600 font-bold mt-1 flex items-center justify-center">
-                                <TrendingUp className="w-3 h-3 mr-1" />
-                                скидка {option.discount}
-                              </div>
-                            )}
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-100 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-200/30 to-transparent rounded-full transform translate-x-16 -translate-y-16"></div>
-
-                  <CardHeader>
-                    <CardTitle className="text-2xl font-bold text-foreground flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                        <Calculator className="w-5 h-5 text-white" />
-                      </div>
-                      <span>Расчет стоимости</span>
-                    </CardTitle>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center py-3 border-b border-green-200">
-                      <span className="text-muted-foreground font-medium">
-                        Продукт:
-                      </span>
-                      <span className="font-bold text-foreground text-right max-w-xs truncate">
-                        {plans[calculatorData.plan as keyof typeof plans].name}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-green-200">
-                      <span className="text-muted-foreground font-medium">
-                        Устройств:
-                      </span>
-                      <span className="font-bold text-foreground">
-                        {calculatorData.devices} шт.
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center py-3 border-b border-green-200">
-                      <span className="text-muted-foreground font-medium">
-                        Период:
-                      </span>
-                      <span className="font-bold text-foreground">
-                        {calculatorData.months} мес.
-                      </span>
-                    </div>
-
-
-                    <div className="flex items-center py-2">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      <span className="text-sm text-muted-foreground">
-                        Мастер скачиваний
-                      </span>
-                      <span className="ml-auto text-sm text-green-600 font-medium">
-                        {additionalOptions.masterDownloader.price.toLocaleString("ru")} ₽
-                      </span>
-                    </div>
-
-                    <Card className="bg-background shadow-lg border-0">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xl font-bold text-foreground">
-                            Итого:
-                          </span>
-                          <div className="text-right">
-                            <div className="text-3xl font-black text-green-600">
-                              до {calculatePrice().toLocaleString("ru")} ₽
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              за весь период
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Button
-                      className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 ease-smooth transform hover:-translate-y-1 hover:scale-102 py-5 text-lg font-bold"
-                      onClick={() =>
-                        document
-                          .getElementById("contacts")
-                          ?.scrollIntoView({ behavior: "smooth" })
-                      }
-                    >
-                      <Calculator className="w-6 h-6 mr-3" />
-                      Узнать точную цену
-                    </Button>
-
-                    <div className="text-center">
-                      <p className="text-xs text-muted-foreground flex items-center justify-center">
-                        <CheckCircle className="w-3 h-3 mr-1 text-green-500" />
-                        Быстрая доставка по всей России
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </Card>
-        </div>
-      </section>
+      
 
       {/* Testimonials Section */}
       <section
@@ -1366,41 +875,14 @@ export default function DrWebLanding() {
           >
             <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
               <CardContent className="p-6 sm:p-8 lg:p-12 text-center">
-                <blockquote className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-medium text-white mb-6 sm:mb-8 leading-relaxed">
+                <blockquote className="text-xl md:text-2xl font-medium text-white mb-4 leading-relaxed">
                   &ldquo;{testimonials[currentTestimonial].text}&rdquo;
                 </blockquote>
-
-                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Users className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-                  </div>
-                  <div className="text-center sm:text-left">
-                    <div className="font-bold text-lg sm:text-xl text-white">
-                      {testimonials[currentTestimonial].name}
-                    </div>
-                    <div className="text-purple-200 text-sm sm:text-base">
-                      {testimonials[currentTestimonial].company}
-                    </div>
-                  </div>
+                <div className="text-purple-200 text-sm">
+                  {testimonials[currentTestimonial].name} — {testimonials[currentTestimonial].company}
                 </div>
               </CardContent>
             </Card>
-
-            <div className="flex justify-center mt-6 sm:mt-8 space-x-2 sm:space-x-3">
-              {testimonials.map((_, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setCurrentTestimonial(index)}
-                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full p-0 transition-all duration-300 ${
-                    index === currentTestimonial
-                      ? "bg-green-400 scale-125"
-                      : "bg-white/30 hover:bg-white/50"
-                  }`}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -1711,267 +1193,14 @@ export default function DrWebLanding() {
                 </CardHeader>
 
                 <CardContent className="p-4 sm:p-6">
-                  <form onSubmit={handleContactSubmit} className="space-y-4 sm:space-y-6">
+                  <form onSubmit={handleContactSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                      <div>
-                        <label className="block text-sm font-bold text-foreground mb-3">
-                          Имя *
-                        </label>
-                        <Input
-                          type="text"
-                          required
-                          value={contactForm.name}
-                          onChange={(e) =>
-                            setContactForm({
-                              ...contactForm,
-                              name: e.target.value,
-                            })
-                          }
-                          onBlur={() =>
-                            setErrors((p) => ({ ...p, name: validators.name?.(contactForm.name) ?? "" }))
-                          }
-                          aria-invalid={!!errors.name || undefined}
-                          placeholder="Ваше имя"
-                          className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                        />
-                        {errors.name && (
-                          <p className="text-xs text-red-600 mt-1">{errors.name}</p>
-                        )}
+                      <Input type="text" required value={contactForm.name} onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })} onBlur={() => setErrors((p) => ({ ...p, name: validators.name?.(contactForm.name) ?? "" }))} aria-invalid={!!errors.name || undefined} placeholder="Имя" className="transition-all hover:border-green-300 focus:border-green-500 focus:ring-green-500/20" />
+                      <Input type="tel" required value={contactForm.phone} onChange={(e) => setContactForm({ ...contactForm, phone: formatRuPhone(e.target.value) })} onBlur={() => setErrors((p) => ({ ...p, phone: validators.phone?.(contactForm.phone) ?? "" }))} aria-invalid={!!errors.phone || undefined} placeholder="Контакт (телефон)" className="transition-all hover:border-green-300 focus:border-green-500 focus:ring-green-500/20" />
                       </div>
+                    <Textarea rows={3} value={contactForm.message} onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })} placeholder="Коротко: сколько устройств и что нужно" className="transition-all hover:border-green-300 focus:border-green-500 focus:ring-green-500/20" />
 
-                      <div>
-                        <label className="block text-sm font-bold text-foreground mb-3">
-                          Телефон *
-                        </label>
-                        <Input
-                          type="tel"
-                          required
-                          value={contactForm.phone}
-                          onChange={(e) =>
-                            setContactForm({
-                              ...contactForm,
-                              phone: formatRuPhone(e.target.value),
-                            })
-                          }
-                          onBlur={() =>
-                            setErrors((p) => ({ ...p, phone: validators.phone?.(contactForm.phone) ?? "" }))
-                          }
-                          aria-invalid={!!errors.phone || undefined}
-                          placeholder="+7 000 000-00-00"
-                          className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                        />
-                        {errors.phone && (
-                          <p className="text-xs text-red-600 mt-1">{errors.phone}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-foreground mb-3">
-                        Email
-                      </label>
-                      <Input
-                        type="email"
-                        value={contactForm.email}
-                        onChange={(e) =>
-                          setContactForm({
-                            ...contactForm,
-                            email: e.target.value,
-                          })
-                        }
-                        onBlur={() =>
-                          setErrors((p) => ({ ...p, email: validators.email?.(contactForm.email) ?? "" }))
-                        }
-                        aria-invalid={!!errors.email || undefined}
-                        placeholder="email@example.com"
-                        className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                      />
-                      {errors.email && (
-                        <p className="text-xs text-red-600 mt-1">{errors.email}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-foreground mb-3">
-                        Компания
-                      </label>
-                      <Input
-                        type="text"
-                        value={contactForm.company}
-                        onChange={(e) =>
-                          setContactForm({
-                            ...contactForm,
-                            company: e.target.value,
-                          })
-                        }
-                        placeholder="Название компании"
-                        className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-foreground mb-3">
-                        Позиция
-                      </label>
-                      <Input
-                        type="text"
-                        value={contactForm.position}
-                        onChange={(e) =>
-                          setContactForm({
-                            ...contactForm,
-                            position: e.target.value,
-                          })
-                        }
-                        placeholder="Название должности"
-                        className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-foreground mb-3">
-                        Тип организации
-                      </label>
-                      <select
-                        value={contactForm.orgType}
-                        onChange={(e) =>
-                          setContactForm({
-                            ...contactForm,
-                            orgType: e.target.value as ContactForm["orgType"],
-                          })
-                        }
-                        className="w-full p-5 border-2 border-input rounded-2xl focus:ring-4 focus:ring-green-500/30 focus:border-green-500 appearance-none bg-background text-foreground font-semibold shadow-lg hover:border-green-300 transition-all duration-300 cursor-pointer"
-                      >
-                        <option value="corporate">Бизнес</option>
-                        <option value="government">
-                          Государственный орган
-                        </option>
-                        <option value="non-profit">
-                          Некоммерческая организация
-                        </option>
-                      </select>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-sm font-bold text-foreground mb-3">
-                          Рабочие станции
-                        </label>
-                        <Input
-                          type="number"
-                          inputMode="numeric"
-                          value={contactForm.desktopDevices}
-                          onChange={(e) => {
-                            const v = e.target.value.replace(/[^0-9]/g, "");
-                            setContactForm({ ...contactForm, desktopDevices: v });
-                          }}
-                          onBlur={() =>
-                            setErrors((p) => ({ ...p, desktopDevices: validators.desktopDevices?.(contactForm.desktopDevices) ?? "" }))
-                          }
-                          aria-invalid={!!errors.desktopDevices || undefined}
-                          placeholder="Desktop"
-                          className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                        />
-                        {errors.desktopDevices && (
-                          <p className="text-xs text-red-600 mt-1">{errors.desktopDevices}</p>
-                        )}
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-bold text-foreground mb-3">
-                          Серверы
-                        </label>
-                        <Input
-                          type="number"
-                          inputMode="numeric"
-                          value={contactForm.serverDevices}
-                          onChange={(e) => {
-                            const v = e.target.value.replace(/[^0-9]/g, "");
-                            setContactForm({ ...contactForm, serverDevices: v });
-                          }}
-                          onBlur={() =>
-                            setErrors((p) => ({ ...p, serverDevices: validators.serverDevices?.(contactForm.serverDevices) ?? "" }))
-                          }
-                          aria-invalid={!!errors.serverDevices || undefined}
-                          placeholder="Server"
-                          className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                        />
-                        {errors.serverDevices && (
-                          <p className="text-xs text-red-600 mt-1">{errors.serverDevices}</p>
-                        )}
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-bold text-foreground mb-3">
-                          Мобильные устройства
-                        </label>
-                        <Input
-                          type="number"
-                          inputMode="numeric"
-                          value={contactForm.mobileDevices}
-                          onChange={(e) => {
-                            const v = e.target.value.replace(/[^0-9]/g, "");
-                            setContactForm({ ...contactForm, mobileDevices: v });
-                          }}
-                          onBlur={() =>
-                            setErrors((p) => ({ ...p, mobileDevices: validators.mobileDevices?.(contactForm.mobileDevices) ?? "" }))
-                          }
-                          aria-invalid={!!errors.mobileDevices || undefined}
-                          placeholder="Mobile"
-                          className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                        />
-                        {errors.mobileDevices && (
-                          <p className="text-xs text-red-600 mt-1">{errors.mobileDevices}</p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-bold text-foreground mb-3">
-                        Чем можем помочь?
-                      </label>
-                      <Textarea
-                        rows={4}
-                        value={contactForm.message}
-                        onChange={(e) =>
-                          setContactForm({
-                            ...contactForm,
-                            message: e.target.value,
-                          })
-                        }
-                        placeholder="Опишите ваши потребности в антивирусной защите, планируемые сроки внедрения, особые требования..."
-                        className="transition-all duration-400 ease-smooth hover:border-green-300 focus:border-green-500 focus:ring-green-500/20"
-                      />
-                    </div>
-
-                    <div className="space-y-3">
-                      <label className="flex items-start space-x-3 text-xs text-muted-foreground cursor-pointer">
-                        <input
-                          type="checkbox"
-                          required
-                          className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
-                        />
-                        <span>
-                          Согласен на обработку персональных данных в соответствии с{" "}
-                          <a href="/privacy" className="text-green-600 hover:text-green-700 underline">
-                            Политикой конфиденциальности
-                          </a>
-                        </span>
-                      </label>
-                      
-                      <label className="flex items-start space-x-3 text-xs text-muted-foreground cursor-pointer">
-                        <input
-                          type="checkbox"
-                          required
-                          className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
-                        />
-                        <span>
-                          Принимаю условия{" "}
-                          <a href="/terms" className="text-green-600 hover:text-green-700 underline">
-                            Пользовательского соглашения
-                          </a>
-                        </span>
-                      </label>
-                    </div>
+                    <p className="text-xs text-muted-foreground text-center">Нажимая «Получить консультацию», вы соглашаетесь с <a href="/privacy" className="underline">Политикой конфиденциальности</a> и <a href="/terms" className="underline">Пользовательским соглашением</a>.</p>
 
                     <Button
                       type="submit"
@@ -2198,10 +1427,7 @@ export default function DrWebLanding() {
                 <span>Решения</span>
               </h4>
               <ul className="space-y-4 text-gray-300">
-                <li className="hover:text-green-400 transition-colors cursor-pointer flex items-center space-x-2">
-                  <ArrowRight className="w-4 h-4" />
-                  <span>Enterprise Security Suite</span>
-                </li>
+                
                 <li className="hover:text-green-400 transition-colors cursor-pointer flex items-center space-x-2">
                   <ArrowRight className="w-4 h-4" />
                   <span>Desktop Security Suite</span>

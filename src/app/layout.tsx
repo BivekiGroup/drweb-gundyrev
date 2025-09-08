@@ -1,13 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import InquiryModal from "@/components/InquiryModal";
 import { ToastProvider } from "@/components/ui/toast";
-
-const inter = Inter({
-  subsets: ["latin", "cyrillic"],
-});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
 
@@ -30,6 +25,14 @@ export const metadata: Metadata = {
       "ФСТЭК",
       "ФСБ",
       "импортозамещение",
+      "доктор веб для госучреждений",
+      "доктор веб для школы",
+      "антивирус для школы",
+      "антивирус для предприятий",
+      "антивирус для малого бизнеса",
+      "Dr.Web для образовательных учреждений",
+      "Dr.Web для государственных учреждений",
+      "антивирус для госорганов",
     ],
   robots: {
     index: true,
@@ -83,7 +86,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`antialiased`}>
         {/* Jivo Chat */}
         <Script src="//code.jivo.ru/widget/N3LCdNFl5u" strategy="beforeInteractive" />
         {/* Organization + WebSite JSON-LD */}
@@ -94,9 +97,7 @@ export default function RootLayout({
             name: "Гундырев — партнер Dr.Web",
             url: siteUrl,
             logo: `${siteUrl}/logo-drweb.svg`,
-            sameAs: [
-              // Add socials when available
-            ],
+            sameAs: [],
             contactPoint: [{
               "@type": "ContactPoint",
               telephone: "+7-993-077-0168",
@@ -104,6 +105,13 @@ export default function RootLayout({
               areaServed: "RU",
               availableLanguage: ["Russian"],
             }],
+            knowsAbout: [
+              "Dr.Web для госучреждений",
+              "Dr.Web для школы",
+              "антивирус для школы",
+              "антивирус для малого бизнеса",
+              "лицензии по 44-ФЗ и 223-ФЗ"
+            ]
           })}
         </Script>
         {/* Yandex.Metrika */}

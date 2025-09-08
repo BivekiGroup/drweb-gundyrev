@@ -102,11 +102,11 @@ export default function InquiryModal() {
 
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-gray-900">Есть вопросы?</h3>
-          <p className="mt-1 text-sm text-gray-600">Напишите нам — ответим в Telegram.</p>
+          <p className="mt-1 text-sm text-gray-600">Напишите нам — ответим быстро.</p>
         </div>
 
         {submitted ? (
-          <div className="rounded-lg bg-green-50 p-4 text-green-700">Сообщение отправлено! Скоро свяжемся в Telegram.</div>
+          <div className="rounded-lg bg-green-50 p-4 text-green-700">Сообщение отправлено! Скоро свяжемся.</div>
         ) : (
           <form onSubmit={onSubmit} className="space-y-3">
             <div>
@@ -156,7 +156,7 @@ export default function InquiryModal() {
               disabled={submitting}
               className="drweb-button-primary w-full justify-center text-center disabled:opacity-60"
             >
-              {submitting ? 'Отправка…' : 'Отправить в Telegram'}
+              {submitting ? 'Отправка…' : 'Отправить'}
             </button>
           </form>
         )}
