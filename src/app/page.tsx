@@ -2,12 +2,14 @@
 
 import {
   ArrowRight,
+  Briefcase,
   Award,
   Building,
   CheckCircle,
   Clock,
   Code,
   Cpu,
+  GraduationCap,
   Fingerprint,
   Headphones,
   Lock,
@@ -26,6 +28,12 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+// Swiper (carousel)
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay, A11y, FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import Image from "next/image";
 import { useToast } from "@/components/ui/toast";
 
@@ -171,6 +179,8 @@ export default function DrWebLanding() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Swiper handles carousel state
 
   
 
@@ -421,13 +431,16 @@ export default function DrWebLanding() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center bg-gradient-to-br from-green-50 via-background to-blue-50 overflow-hidden">
-        {/* Animated Background */}
-        <div className="hero-bg">
-          <div className="hero-grid"></div>
-          <div className="hero-lines parallax-lines"></div>
-          <div className="hero-orb orb-1"></div>
-          <div className="hero-orb orb-2"></div>
-          <div className="hero-orb orb-3"></div>
+        {/* Animated Background (reverted to previous version) */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+          <div className="absolute top-0 left-0 w-full h-full">
+            <div className="floating-shapes">
+              <div className="shape shape-1"></div>
+              <div className="shape shape-2"></div>
+              <div className="shape shape-3"></div>
+            </div>
+          </div>
         </div>
 
         <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-14 sm:py-16 md:py-20 lg:py-24 xl:py-28">
@@ -488,27 +501,85 @@ export default function DrWebLanding() {
         </div>
       </section>
 
-      {/* SEO Content Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-black text-foreground mb-6">Антивирус Dr.Web для госучреждений и образования</h2>
-          <div className="grid md:grid-cols-2 gap-8 text-sm text-muted-foreground leading-relaxed">
-            <div>
-              <h3 className="font-bold text-foreground mb-2">Доктор Веб для госучреждений</h3>
-              <p>Соответствие требованиям ФСТЭК и ФСБ, поставка по 44‑ФЗ и 223‑ФЗ, централизованное управление и лицензирование по узлам. Подходит для ведомств, муниципалитетов и ГУПов.</p>
-                      </div>
-            <div>
-              <h3 className="font-bold text-foreground mb-2">Доктор Веб для школы</h3>
-              <p>Комплект для образовательных учреждений: защита рабочих станций учителей и серверов, фильтрация почты и лёгкое администрирование. Подходит для школ, колледжей и вузов.</p>
-                      </div>
-            <div>
-              <h3 className="font-bold text-foreground mb-2">Антивирус для школы</h3>
-              <p>Лицензирование по количеству узлов, поддержка Windows, Linux и macOS, техническая поддержка на русском 24/7. Возможно развертывание в изолированных сетях (air‑gapped).</p>
-                      </div>
-            <div>
-              <h3 className="font-bold text-foreground mb-2">Для малого бизнеса</h3>
-              <p>Готовый комплект «рабочие станции + почта + управление». Быстрый старт за 3 дня и экономия ТСО благодаря единому Центру управления.</p>
-            </div>
+      {/* SEO Content Section (redesigned) */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <h2 className="text-2xl md:text-3xl font-black text-foreground mb-2 text-center">Антивирус Dr.Web для госучреждений и образования</h2>
+          <p className="text-sm md:text-base text-muted-foreground text-center max-w-3xl mx-auto mb-10">Коротко и по делу: кому подходит, чем полезен и почему выбирают Dr.Web.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-600"></div>
+              <CardHeader>
+                <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Building className="w-7 h-7 text-white" />
+                </div>
+                <CardTitle className="text-xl">Госучреждения</CardTitle>
+                <CardDescription className="text-sm">ФСТЭК/ФСБ, 44/223‑ФЗ, единый Центр управления</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Соответствие нормам кибербезопасности РФ</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Поставка по 44/223‑ФЗ</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Централизованная политика и отчётность</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+              <CardHeader>
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <GraduationCap className="w-7 h-7 text-white" />
+                </div>
+                <CardTitle className="text-xl">Образование</CardTitle>
+                <CardDescription className="text-sm">Комплекты для школ, колледжей и вузов</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Защита ПК учителей и серверов</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Простое развертывание и администрирование</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Льготные условия для ОУ</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-green-700"></div>
+              <CardHeader>
+                <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-700 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Shield className="w-7 h-7 text-white" />
+                </div>
+                <CardTitle className="text-xl">Air‑gapped</CardTitle>
+                <CardDescription className="text-sm">Работа в изолированных сетях</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Оффлайн‑обновления и управление</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Сертифицированные компоненты</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Лицензирование по узлам</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-red-500"></div>
+              <CardHeader>
+                <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <Briefcase className="w-7 h-7 text-white" />
+                </div>
+                <CardTitle className="text-xl">Малый бизнес</CardTitle>
+                <CardDescription className="text-sm">Готовый комплект: станции + почта + управление</CardDescription>
+              </CardHeader>
+              <CardContent className="text-sm text-muted-foreground">
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Запуск за 3 дня</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Снижение ТСО за счёт UMC</li>
+                  <li className="flex items-start gap-2"><CheckCircle className="w-4 h-4 text-green-600 mt-0.5"/> Русская поддержка 24/7</li>
+                </ul>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -521,13 +592,6 @@ export default function DrWebLanding() {
         <div className="absolute inset-0 bg-circuit-pattern opacity-5"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-20" data-animate id="solutions-header">
-            <Badge
-              variant="secondary"
-              className="inline-flex items-center bg-blue-100 text-blue-800 px-6 py-3 rounded-full mb-6"
-            >
-              <Cpu className="w-4 h-4 mr-2" />
-              Комплексные решения
-            </Badge>
             <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6">
               Выберите{" "}
               <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
@@ -539,7 +603,26 @@ export default function DrWebLanding() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 sm:gap-6">
+          {/* Swiper Carousel (all viewports) */}
+          <div className="relative">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay, A11y, FreeMode]}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 4000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              freeMode={{ enabled: false }}
+              loop
+              spaceBetween={16}
+              breakpoints={{
+                0: { slidesPerView: 1.05, spaceBetween: 12 },
+                480: { slidesPerView: 1.2, spaceBetween: 14 },
+                640: { slidesPerView: 1.6, spaceBetween: 16 },
+                768: { slidesPerView: 2.2, spaceBetween: 18 },
+                1024: { slidesPerView: 3.2, spaceBetween: 20 },
+                1280: { slidesPerView: 4, spaceBetween: 24 },
+              }}
+              className="!pb-10 solutions-swiper"
+            >
             {[
               {
                 icon: Building,
@@ -620,23 +703,8 @@ export default function DrWebLanding() {
                 nodeType: "за мобильное устройство",
               },
             ].map((solution, index) => (
-              <div
-                key={index}
-                className={`relative group ${
-                  visibleElements.has("solutions-header")
-                    ? "animate-slide-in-up"
-                    : "opacity-0"
-                }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {solution.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                    <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-lg animate-pulse">
-                      <Star className="w-4 h-4 mr-1" />
-                      Лидер продаж
-                    </Badge>
-                  </div>
-                )}
+              <SwiperSlide key={index} className="!h-auto">
+                
                 <Card className="h-full border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 bg-background/90 backdrop-blur-sm relative overflow-hidden group">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-border to-transparent"></div>
                   <div
@@ -690,8 +758,9 @@ export default function DrWebLanding() {
                     </Button>
                   </CardContent>
                 </Card>
-              </div>
+              </SwiperSlide>
             ))}
+            </Swiper>
           </div>
         </div>
       </section>
@@ -703,7 +772,7 @@ export default function DrWebLanding() {
         <div className="absolute inset-0 bg-circuit-pattern opacity-5"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div
-            className="text-center mb-20"
+            className="text-center mb-14"
             data-animate
             id="gov-benefits-header"
           >
@@ -714,13 +783,13 @@ export default function DrWebLanding() {
                 выгодный выбор
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               Экономия бюджета, соответствие требованиям безопасности РФ,
               российская разработка
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-14">
             {[
               {
                 icon: TrendingUp,
@@ -750,31 +819,31 @@ export default function DrWebLanding() {
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <Card className="h-full border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 bg-background/90 backdrop-blur-sm relative overflow-hidden">
+                <Card className="h-full border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 bg-background/90 backdrop-blur-sm relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                  <CardContent className="p-8 relative z-10">
-                    <div
-                      className={`w-16 h-16 bg-gradient-to-br ${benefit.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <benefit.icon className="w-8 h-8 text-white" />
+                  <CardContent className="p-6 sm:p-7 md:p-8 relative z-10">
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-12 h-12 bg-gradient-to-br ${benefit.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                          <benefit.icon className="w-7 h-7 text-white" />
+                        </div>
+                        <h3 className="text-lg md:text-xl font-black text-foreground leading-tight">
+                          {benefit.title}
+                        </h3>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-3xl md:text-4xl font-black text-green-600 leading-none">
+                          {benefit.stats}
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {benefit.statsLabel}
+                        </div>
+                      </div>
                     </div>
-
-                    <h3 className="text-xl font-bold mb-4 text-foreground">
-                      {benefit.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                       {benefit.description}
                     </p>
-
-                    <div className="flex items-end space-x-2">
-                      <div className="text-3xl font-black text-green-600">
-                        {benefit.stats}
-                      </div>
-                      <div className="text-sm text-muted-foreground pb-1">
-                        {benefit.statsLabel}
-                      </div>
-                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -840,52 +909,7 @@ export default function DrWebLanding() {
 
 
       
-
-      {/* Testimonials Section */}
-      <section
-        id="testimonials"
-        className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-800 to-gray-900 text-white relative overflow-hidden"
-      >
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div
-            className="text-center mb-12 sm:mb-16 lg:mb-20"
-            data-animate
-            id="testimonials-header"
-          >
-
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6">
-              Что говорят{" "}
-              <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                наши клиенты
-              </span>
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
-              Более 10,000 довольных клиентов выбрали Dr.Web и Гундырев.рф для защиты своего
-              бизнеса
-            </p>
-          </div>
-
-          <div
-            className={`max-w-4xl mx-auto ${
-              visibleElements.has("testimonials-header")
-                ? "animate-fade-in-up"
-                : "opacity-0"
-            }`}
-          >
-            <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
-              <CardContent className="p-6 sm:p-8 lg:p-12 text-center">
-                <blockquote className="text-xl md:text-2xl font-medium text-white mb-4 leading-relaxed">
-                  &ldquo;{testimonials[currentTestimonial].text}&rdquo;
-                </blockquote>
-                <div className="text-purple-200 text-sm">
-                  {testimonials[currentTestimonial].name} — {testimonials[currentTestimonial].company}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Additional Services Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 via-background to-blue-50 relative overflow-hidden">
@@ -905,7 +929,24 @@ export default function DrWebLanding() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+          <div className="relative">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay, A11y, FreeMode]}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              loop
+              spaceBetween={16}
+              breakpoints={{
+                0: { slidesPerView: 1.05, spaceBetween: 12 },
+                480: { slidesPerView: 1.2, spaceBetween: 14 },
+                640: { slidesPerView: 1.6, spaceBetween: 16 },
+                768: { slidesPerView: 2.2, spaceBetween: 18 },
+                1024: { slidesPerView: 3.2, spaceBetween: 20 },
+                1280: { slidesPerView: 3.5, spaceBetween: 24 },
+              }}
+              className="!pb-10 services-swiper"
+            >
             {[
               {
                 icon: Cpu,
@@ -990,7 +1031,7 @@ export default function DrWebLanding() {
                 badge: "Виртуальная сеть",
               },
             ].map((service, index) => (
-              <div key={index} className="group">
+              <SwiperSlide key={index} className="!h-auto">
                 <Card className="h-full border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-4 bg-background/90 backdrop-blur-sm relative overflow-hidden">
                   <div className="absolute top-4 right-4">
                     <Badge
@@ -1029,47 +1070,12 @@ export default function DrWebLanding() {
                     </ul>
                   </CardContent>
                 </Card>
-              </div>
+              </SwiperSlide>
             ))}
+            </Swiper>
           </div>
 
-          {/* Support Contact Info */}
-          <div className="mt-16 bg-gradient-to-r from-green-900 via-blue-900 to-purple-900 rounded-3xl p-8 text-white relative overflow-hidden">
-            <div className="absolute inset-0 bg-black/20"></div>
-            <div className="relative z-10">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-4">
-                  Контакты технической поддержки
-                </h3>
-                <p className="text-green-200">
-                  Мы всегда готовы помочь с любыми вопросами
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6 text-center">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <Phone className="w-8 h-8 text-green-400 mx-auto mb-4" />
-                  <h4 className="font-bold mb-2">Телефон</h4>
-                  <p className="text-green-200">+7 993 077-01-68</p>
-                  <p className="text-sm text-gray-300">Поддержка Гундырев.рф</p>
-                </div>
-
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <Mail className="w-8 h-8 text-blue-400 mx-auto mb-4" />
-                  <h4 className="font-bold mb-2">Email поддержка</h4>
-                  <p className="text-blue-200">info@gundyrev.com</p>
-                  <p className="text-sm text-gray-300">Поддержка Гундырев М.А.</p>
-                </div>
-
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-                  <Clock className="w-8 h-8 text-purple-400 mx-auto mb-4" />
-                  <h4 className="font-bold mb-2">Режим работы</h4>
-                  <p className="text-purple-200">Пн-Пт 9:00-18:00</p>
-                  <p className="text-sm text-gray-300">Московское время</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Support Contact Info - removed per request */}
         </div>
       </section>
 
@@ -1093,94 +1099,74 @@ export default function DrWebLanding() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16">
-            <div
-              className={`${
-                visibleElements.has("contacts-header")
-                  ? "animate-slide-in-left"
-                  : "opacity-0"
-              }`}
-            >
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-6 sm:mb-8">
-                Как с нами связаться
-              </h3>
-              <div className="space-y-6 sm:space-y-8">
-                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex items-start space-x-4 sm:space-x-6">
-                      <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-3 sm:p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg flex-shrink-0">
-                        <Phone className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-stretch">
+            <div className={`${visibleElements.has("contacts-header") ? "animate-slide-in-left" : "opacity-0"}`}>
+              <Card className="h-full border-0 shadow-2xl relative overflow-hidden bg-gradient-to-br from-green-50 via-emerald-50 to-white">
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500"></div>
+                <CardHeader className="p-5 sm:p-6">
+                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-black text-foreground">
+                    Как с нами связаться
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-5 sm:p-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <a href="tel:+79930770168" className="group block p-5 rounded-2xl bg-white/80 backdrop-blur border border-gray-100 hover:border-green-300 transition-all shadow">
+                      <div className="flex items-start gap-4">
+                        <div className="bg-gradient-to-br from-green-500 to-emerald-600 p-3 rounded-xl shadow-lg">
+                          <Phone className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-foreground text-lg">Горячая линия</div>
+                          <div className="text-muted-foreground text-base font-semibold">+7 993 077-01-68</div>
+                          <div className="text-xs text-muted-foreground">Бесплатно по России • Круглосуточно</div>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-bold text-foreground text-lg sm:text-xl mb-1 sm:mb-2">
-                          Горячая линия
-                        </h4>
-                        <p className="text-muted-foreground text-base sm:text-lg font-semibold">
-                          +7 993 077-01-68
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          Бесплатно по России • Круглосуточно
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </a>
 
-                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex items-start space-x-4 sm:space-x-6">
-                      <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 sm:p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg flex-shrink-0">
-                        <Mail className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                    <a href="mailto:info@gundyrev.com" className="group block p-5 rounded-2xl bg-white/80 backdrop-blur border border-gray-100 hover:border-green-300 transition-all shadow">
+                      <div className="flex items-start gap-4">
+                        <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-3 rounded-xl shadow-lg">
+                          <Mail className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-foreground text-lg">Email поддержка</div>
+                          <div className="text-muted-foreground text-base font-semibold">info@gundyrev.com</div>
+                          <div className="text-xs text-muted-foreground">Ответ в течение 2 часов</div>
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-bold text-foreground text-lg sm:text-xl mb-1 sm:mb-2">
-                          Email поддержка
-                        </h4>
-                        <p className="text-muted-foreground text-base sm:text-lg font-semibold">
-                          info@gundyrev.com
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          Ответ в течение 2 часов
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </a>
 
-                <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex items-start space-x-4 sm:space-x-6">
-                      <div className="bg-gradient-to-br from-orange-500 to-red-600 p-3 sm:p-4 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg flex-shrink-0">
-                        <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-foreground text-lg sm:text-xl mb-1 sm:mb-2">
-                          Режим работы
-                        </h4>
-                        <p className="text-muted-foreground text-sm sm:text-base">
-                          Пн-Пт: 9:00-18:00 МСК
-                        </p>
-                        <p className="text-muted-foreground text-sm sm:text-base">
-                          Техподдержка: 24/7
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          Экстренная поддержка в выходные
-                        </p>
+                    <div className="p-5 rounded-2xl bg-white/80 backdrop-blur border border-gray-100 hover:border-green-300 transition-all shadow">
+                      <div className="flex items-start gap-4">
+                        <div className="bg-gradient-to-br from-orange-500 to-red-600 p-3 rounded-xl shadow-lg">
+                          <Clock className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-foreground text-lg">Режим работы</div>
+                          <div className="text-muted-foreground text-sm">Пн-Пт: 9:00-18:00 МСК</div>
+                          <div className="text-muted-foreground text-sm">Техподдержка: 24/7</div>
+                        </div>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+
+                    <div className="p-5 rounded-2xl bg-white/80 backdrop-blur border border-gray-100 hover:border-green-300 transition-all shadow">
+                      <div className="flex items-start gap-4">
+                        <div className="bg-gradient-to-br from-emerald-500 to-green-700 p-3 rounded-xl shadow-lg">
+                          <Headphones className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-foreground text-lg">Экстренная поддержка</div>
+                          <div className="text-muted-foreground text-sm">В выходные и праздники</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
-            <div
-              className={`${
-                visibleElements.has("contacts-header")
-                  ? "animate-slide-in-right"
-                  : "opacity-0"
-              }`}
-            >
-              <Card className="border-0 shadow-2xl relative overflow-hidden">
+            <div className={`${visibleElements.has("contacts-header") ? "animate-slide-in-right" : "opacity-0"}`}>
+              <Card className="h-full border-0 shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500"></div>
 
                 <CardHeader className="p-4 sm:p-6">
@@ -1222,117 +1208,54 @@ export default function DrWebLanding() {
         </div>
               </section>
 
-      {/* Partner Block */}
-      <section className="py-16 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-circuit-pattern opacity-5"></div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-12">
 
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6">
-              Гундырев М.А. официальный партнер{" "}
-              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                Dr.Web
+
+
+      {/* Testimonials Section (moved to bottom) */}
+      <section
+        id="testimonials"
+        className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-800 to-gray-900 text-white relative overflow-hidden"
+      >
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div
+            className="text-center mb-12 sm:mb-16 lg:mb-20"
+            data-animate
+            id="testimonials-header"
+          >
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6">
+              Что говорят{" "}
+              <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                наши клиенты
               </span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Официальный начинающий партнер ООО «Доктор Веб» с прямыми поставками и специальными ценами
+            <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
+              Более 10,000 довольных клиентов выбрали Dr.Web и Гундырев.рф для защиты своего
+              бизнеса
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500"></div>
-              <CardContent className="p-8">
-                <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
-                    <Award className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                                    <h3 className="text-xl font-bold text-foreground">Сертифицированный поставщик</h3>
-                <p className="text-sm text-muted-foreground">Официальный статус начинающего партнера Dr.Web</p>
-                  </div>
+          <div
+            className={`max-w-4xl mx-auto ${
+              visibleElements.has("testimonials-header")
+                ? "animate-fade-in-up"
+                : "opacity-0"
+            }`}
+          >
+            <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
+              <CardContent className="p-6 sm:p-8 lg:p-12 text-center">
+                <blockquote className="text-xl md:text-2xl font-medium text-white mb-4 leading-relaxed">
+                  &ldquo;{testimonials[currentTestimonial].text}&rdquo;
+                </blockquote>
+                <div className="text-purple-200 text-sm">
+                  {testimonials[currentTestimonial].name} — {testimonials[currentTestimonial].company}
                 </div>
-                <ul className="space-y-3">
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Прямые поставки от производителя
-                  </li>
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Специальные скидки до 35%
-                  </li>
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Официальная гарантия качества
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
-              <CardContent className="p-8">
-                <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                    <Headphones className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-foreground">Квалифицированная поддержка</h3>
-                    <p className="text-sm text-muted-foreground">Эксперты с многолетним опытом</p>
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Техподдержка 24/7 на русском языке
-                  </li>
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Помощь при внедрении и настройке
-                  </li>
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Обучение персонала работе с продуктом
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/90 backdrop-blur-sm relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-              <CardContent className="p-8">
-                <div className="flex items-center space-x-4 mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
-                    <Rocket className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-foreground">Быстрая доставка</h3>
-                    <p className="text-sm text-muted-foreground">По всей России без задержек</p>
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Мгновенная доставка лицензий
-                  </li>
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Работаем без наценок
-                  </li>
-                  <li className="flex items-center text-sm text-muted-foreground">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    Цены от производителя
-                  </li>
-                </ul>
               </CardContent>
             </Card>
           </div>
-
-
         </div>
       </section>
-
-
 
       {/* Footer */}
       <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white py-8 sm:py-12 lg:py-16 relative overflow-hidden">

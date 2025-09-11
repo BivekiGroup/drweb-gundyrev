@@ -823,6 +823,69 @@ a, button, input, select, textarea, [role="button"] {
   animation: shimmer 1.5s infinite;
 }
 
+/* Hide horizontal scrollbar for carousels */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Soft edge fade for horizontal carousels */
+.mask-edge-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+}
+
+/* Swiper customization for solutions carousel */
+.solutions-swiper .swiper-button-prev,
+.solutions-swiper .swiper-button-next {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  color: #111827;
+  top: 45%;
+}
+
+.solutions-swiper .swiper-button-prev { left: 8px; }
+.solutions-swiper .swiper-button-next { right: 8px; }
+
+.solutions-swiper .swiper-button-prev:after,
+.solutions-swiper .swiper-button-next:after {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.solutions-swiper .swiper-pagination-bullet {
+  background: #d1d5db;
+  opacity: 1;
+}
+.solutions-swiper .swiper-pagination-bullet-active {
+  background: #16a34a;
+}
+/* Services carousel styling */
+.services-swiper .swiper-button-prev,
+.services-swiper .swiper-button-next {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(17, 24, 39, 0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  color: #111827;
+  top: 40%;
+}
+.services-swiper .swiper-button-prev { left: 8px; }
+.services-swiper .swiper-button-next { right: 8px; }
+.services-swiper .swiper-button-prev:after,
+.services-swiper .swiper-button-next:after { font-size: 16px; font-weight: 700; }
+.services-swiper .swiper-pagination-bullet { background: #d1d5db; opacity: 1; }
+.services-swiper .swiper-pagination-bullet-active { background: #16a34a; }
+
 /* Responsive improvements */
 @media (max-width: 640px) {
   .container-padding {
